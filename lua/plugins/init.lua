@@ -16,7 +16,7 @@ local fileType = {
   'javascript',
   'bash',
   'javascriptreact',
-  'typescriptreact',
+        'typescriptreact',
   'markdown',
   'lua',
   'html',
@@ -27,25 +27,73 @@ local fileType = {
 require("lazy").setup({
 	{ "nvim-tree/nvim-tree.lua" },
 	{ "nvim-tree/nvim-web-devicons" },
-	{ "m4xshen/autoclose.nvim" },
-	-- { "romgrk/barbar.nvim" },
-	{ "nvim-lualine/lualine.nvim" },
+	{
+    "m4xshen/autoclose.nvim"
+  },
+	
+  {
+    "nvim-lualine/lualine.nvim"
+    
+  },
 	{ "nvim-treesitter/nvim-treesitter" },
   
-	{ 'nvim-telescope/telescope.nvim',
-	tag = '0.1.1',
-    dependencies = { 'nvim-lua/plenary.nvim' }
+	{
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.1',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'tsakirist/telescope-lazy.nvim'
+    },
+    cmd = {
+      "Telescope",
+      "Telescope find_files",
+      "Telescope buffers",
+      "Telescope colorscheme"
+    }, 
   },
-  { "akinsho/toggleterm.nvim" },
+  
+  {
+    "akinsho/toggleterm.nvim",
+    cmd = 'ToggleTerm'
+  },
+
   { "lukas-reineke/indent-blankline.nvim" },
-  { "SmiteshP/nvim-navic", dependencies = {"neovim/nvim-lspconfig"} },
-  { "olimorris/onedarkpro.nvim", priority = 1000 },
+  
   { "goolord/alpha-nvim" },
+
+  -- fix
   { 'kevinhwang91/nvim-bqf' },
+
+  -- dependencies (json)
+  {
+    "vuki656/package-info.nvim",
+    ft = 'json',
+    config = function()
+      require("package-info").setup()
+    end
+  },
+
   { 'xiyaowong/nvim-cursorword' },
-  { "folke/which-key.nvim" },
-  { "williamboman/mason.nvim" },
-  { "maxmellon/vim-jsx-pretty", ft = 'javascriptreact' },
+  {
+    "williamboman/mason.nvim",
+    cmd = {
+      "Mason",
+      "MasonInstall",
+      "MasonUninstall",
+      "MasonUninstallAll",
+      "MasonLog" 
+    },
+
+    config = function()
+      require('mason').setup()
+    end
+  },
+
+  {
+    "maxmellon/vim-jsx-pretty",
+    ft = 'javascriptreact'
+  },
+
   {
     "filipdutescu/renamer.nvim",
     branch = "master",
@@ -57,6 +105,7 @@ require("lazy").setup({
 
   {
     'numToStr/Comment.nvim',
+    ft = fileType,
     config = function()
         require('Comment').setup()
     end
@@ -72,9 +121,35 @@ require("lazy").setup({
   },
 
 
+  --
+  {
+    "jose-elias-alvarez/null-ls.nvim",
+    config = function()
+      local null_ls = require("null-ls")
+		  null_ls.setup({
+			  sources = {
+				  null_ls.builtins.formatting.stylua,
+				  -- null_ls.builtins.diagnostics.eslint,
+				  -- null_ls.builtins.completion.spell,
+          },
+      })
+  end
+  },
+
+  {
+    "nvim-lua/plenary.nvim",
+    cmd = { 'PlenaryBustedFile', 'PlenaryBustedDirectory' },
+    config = function()
+      require("plenary.async")
+    end
+  },
+
   -- Temas
   { "tiagovla/tokyodark.nvim" },
   { "EdenEast/nightfox.nvim" },
+  { "sainnhe/edge" },
+
+  ----------------------------------
   
   -- Lsp
   { "neovim/nvim-lspconfig", ft = fileType },
@@ -83,11 +158,13 @@ require("lazy").setup({
   { 'hrsh7th/cmp-path', ft = fileType },
   { 'hrsh7th/cmp-cmdline', ft = fileType },
   { 'hrsh7th/nvim-cmp', ft = fileType },
-  { 'saadparwaiz1/cmp_luasnip', ft = fileType },
   
+  -- snippets
+  { 'saadparwaiz1/cmp_luasnip', ft = fileType },
   {
     "L3MON4D3/LuaSnip",
     dependencies = { "rafamadriz/friendly-snippets" },
+    ft = fileType
   }
 
   --------------------

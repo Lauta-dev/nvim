@@ -1,12 +1,8 @@
 function req(req) require("plugins/configuracion/" .. req) end
 
-vim.cmd('set clipboard=unnamedplus')
-
-
 require("plugins/init")
 require("teclas/teclas")
 require("opciones")
-
 
 req("nvim-tree")
 req("alpha-nvim")
@@ -16,6 +12,7 @@ req("nvim-treesitter")
 req("cmp")
 req("mason")
 req("toggle-term")
+req("null-ls")
 --req("which-key-nvim")
 
 
