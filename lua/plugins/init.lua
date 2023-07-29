@@ -11,15 +11,29 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local fileType = {
+  'typescript',
+  'javascript',
+  'bash',
+  'javascriptreact',
+  'typescriptreact',
+  'markdown',
+  'lua',
+  'html',
+  'css'
+}
+
+
 require("lazy").setup({
 	{ "nvim-tree/nvim-tree.lua" },
 	{ "nvim-tree/nvim-web-devicons" },
 	{ "m4xshen/autoclose.nvim" },
-	{ "romgrk/barbar.nvim" },
+	-- { "romgrk/barbar.nvim" },
 	{ "nvim-lualine/lualine.nvim" },
 	{ "nvim-treesitter/nvim-treesitter" },
-  { 'nvim-telescope/telescope.nvim',
-    tag = '0.1.1',
+  
+	{ 'nvim-telescope/telescope.nvim',
+	tag = '0.1.1',
     dependencies = { 'nvim-lua/plenary.nvim' }
   },
   { "akinsho/toggleterm.nvim" },
@@ -48,19 +62,28 @@ require("lazy").setup({
     end
   },
 
+  {
+    'akinsho/bufferline.nvim',
+    version = "*",
+    dependencies = 'nvim-tree/nvim-web-devicons',
+    config = function()
+    	require("bufferline").setup{}
+    end
+  },
+
 
   -- Temas
   { "tiagovla/tokyodark.nvim" },
   { "EdenEast/nightfox.nvim" },
   
   -- Lsp
-  { "neovim/nvim-lspconfig" },
-  { 'hrsh7th/cmp-nvim-lsp' },
-  { 'hrsh7th/cmp-buffer' },
-  { 'hrsh7th/cmp-path' },
-  { 'hrsh7th/cmp-cmdline' },
-  { 'hrsh7th/nvim-cmp' },
-  { 'saadparwaiz1/cmp_luasnip' },
+  { "neovim/nvim-lspconfig", ft = fileType },
+  { 'hrsh7th/cmp-nvim-lsp', ft = fileType },
+  { 'hrsh7th/cmp-buffer', ft = fileType },
+  { 'hrsh7th/cmp-path', ft = fileType },
+  { 'hrsh7th/cmp-cmdline', ft = fileType },
+  { 'hrsh7th/nvim-cmp', ft = fileType },
+  { 'saadparwaiz1/cmp_luasnip', ft = fileType },
   
   {
     "L3MON4D3/LuaSnip",

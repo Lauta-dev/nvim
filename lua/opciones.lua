@@ -10,4 +10,4 @@ set.hlsearch = false
 set.wrap = true
 set.breakindent = true
 
-vim.cmd.colorscheme "nightfox"
+vim.cmd.colorscheme "carbonfox"
