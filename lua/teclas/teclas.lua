@@ -6,6 +6,9 @@ function espacio(estado, tecla, accion)
   vim.keymap.set(estado, "<leader>" .. tecla, accion, { silent = true, noremap = true }) 
 end
 
+-- Rest http
+map("n", "C-m", "<Plug>RestNvim")
+
 -- key <leader>
 vim.g.mapleader = " "
 
@@ -18,7 +21,7 @@ map("n", "C-b", ":NvimTreeToggle<CR>")
 -- buffers
 map("n", "S-l", ":BufferLineCycleNext<CR>")
 map("n", "S-k", ":BufferLineCyclePrev<CR>")
-map("n", "C-w", ":BufferLinePickClose<CR>")
+map("n", "C-w", ":bd<CR>")
 
 -- copy text
 map("n", "y", '"+y')
@@ -28,7 +31,7 @@ map("n", "p", '"+p')
 map("n", "C-j", ":ToggleTerm<CR>")
 map("t", "C-j", ":wincdmd ToggleTerm<CR>")
 
-map("n", "C-p", 'lua require("renamer").rename()')
+map("n", "C-p", '<cmd>lua require("renamer").rename()<cr>')
 
 -- atajos con espacios
 espacio("n", "e", ":NvimTreeFocus<CR>")
@@ -46,12 +49,21 @@ vim.keymap.set(
   { expr = true }
 )
 
+-- Formatear texto al guardar
+local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
+augroup("__formatter__", { clear = true })
+autocmd("BufWritePost", {
+	group = "__formatter__",
+	command = ":FormatWrite",
+})
+
+
 
 -- Telescope
 espacio('n', 'ff', ':Telescope find_files<CR>')
 espacio('n', 'fb', ':Telescope buffers<CR>')
 espacio('n', 'cs', ':Telescope colorscheme<CR>')
-
 
 -- package-info
 espacio('n', 'pt', require("package-info").toggle)
@@ -59,27 +71,3 @@ espacio('n', 'pi', require("package-info").install)
 espacio('n', 'pu', require("package-info").update)
 espacio('n', 'pd', require("package-info").delete)
 
--- pt 
-
-
-
--- Show dependency versions
--- vim.keymap.set({ "n" }, "<LEADER>ns", require("package-info").show, { silent = true, noremap = true })
-
--- Hide dependency versions
--- vim.keymap.set({ "n" }, "<LEADER>nc", require("package-info").hide, { silent = true, noremap = true })
-
--- Toggle dependency versions
--- vim.keymap.set({ "n" }, "<leader>nt", , { silent = true, noremap = true })
-
--- Update dependency on the line
--- vim.keymap.set({ "n" }, "<LEADER>nu", require("package-info").update, { silent = true, noremap = true })
-
--- Delete dependency on the line
--- vim.keymap.set({ "n" }, "<LEADER>nd", require("package-info").delete, { silent = true, noremap = true })
-
--- Install a new dependency
--- vim.keymap.set({ "n" }, "<LEADER>ni", require("package-info").install, { silent = true, noremap = true })
-
--- Install a different dependency version
--- vim.keymap.set({ "n" }, "<LEADER>np", require("package-info").change_version, { silent = true, noremap = true })

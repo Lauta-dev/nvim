@@ -1,5 +1,6 @@
 local set = vim.opt
 local bg = vim.cmd.colorscheme
+bg "carbonfox"
 
 set.number        = true          -- Numero de filas
 set.tabstop       = 2             --
@@ -15,6 +16,3 @@ set.fileencoding  = "utf-8"       -- Codificacion utf-8
 set.cursorline    = true          -- El cursor estara resaltado
 set.clipboard     = 'unnamedplus' -- Habilitar portapapeles
 set.termguicolors = true          --
-
-
-bg "carbonfox"
