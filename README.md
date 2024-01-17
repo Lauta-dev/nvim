@@ -1,5 +1,7 @@
 <h1 align="center">Configuración de nvim</h1>
 
+![nvim](./public/nvim.png)
+
 Depencencias:
 - git
 - neovim >= 0.8.0
