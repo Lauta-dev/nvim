@@ -5,6 +5,44 @@
   },
   "p": {
     "prefix": "p",
-    "body": [ "<p>$1</div>" ]
+    "body": [ "<p>$1</p>" ]
+  },
+    "ul": {
+    "prefix": "ul",
+    "body": [ "<ul>$1</ul>" ]
+  },
+    "li": {
+    "prefix": "li",
+    "body": [ "<li>$1</li>" ]
+  },
+    "img": {
+    "prefix": "img",
+    "body": [ "<img src='$1' alt='$2' />" ]
+  },
+    "section": {
+    "prefix": "section",
+    "body": [ "<section>$1</section>" ]
+  },
+    "nav": {
+    "prefix": "nav",
+    "body": [ "<nav>$1</nav>" ]
+  },
+    "header": {
+    "prefix": "header",
+    "body": [ "<header>$1</header>" ]
+  },
+    "a": {
+    "prefix": "a",
+    "body": [ "<a href='$1'>$2</a>" ]
+  },
+  
+    "Link": {
+    "prefix": "WLink",
+    "body": [ "<Link href={'$1'}>$2</Link>" ]
+  },
+
+    "create-component": {
+    "prefix": "cc",
+    "body": [ "function $1 () {}\n export default $2" ]
   }
 }
