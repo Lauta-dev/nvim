@@ -23,7 +23,7 @@ local fileType = {
 	"css",
 	"astro",
 	"python",
-  'http',
+	"http",
 }
 
 require("lazy").setup({
@@ -61,21 +61,8 @@ require("lazy").setup({
 	},
 
 	{ "lukas-reineke/indent-blankline.nvim" },
-  { "rest-nvim/rest.nvim", ft = { 'http' } },
-  { "lewis6991/gitsigns.nvim" },
-
-
-	-- fix
-	{ "kevinhwang91/nvim-bqf" },
-
-	-- dependencies (json)
-	{
-		"vuki656/package-info.nvim",
-		ft = "json",
-		config = function()
-			require("package-info").setup()
-		end,
-	},
+	{ "rest-nvim/rest.nvim", ft = { "http" } },
+	{ "lewis6991/gitsigns.nvim" },
 
 	{ "xiyaowong/nvim-cursorword" },
 	{
@@ -149,10 +136,7 @@ require("lazy").setup({
 	},
 
 	-- Temas
-	{ "tiagovla/tokyodark.nvim" },
 	{ "EdenEast/nightfox.nvim" },
-	{ "sainnhe/edge" },
-  { "AstroNvim/astrotheme" },
 
 	----------------------------------
 

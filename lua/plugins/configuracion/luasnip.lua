@@ -26,9 +26,10 @@ local types = require("luasnip.util.types")
 local parse = require("luasnip.util.parser").parse_snippet
 
 return s("trigger", {
-	t({"After expanding, the cursor is here ->"}), i(1),
-	t({"", "After jumping forward once, cursor is here ->"}), i(2),
-	t({"", "After jumping once more, the snippet is exited there ->"}), i(0),
+	t({ "After expanding, the cursor is here ->" }),
+	i(1),
+	t({ "", "After jumping forward once, cursor is here ->" }),
+	i(2),
+	t({ "", "After jumping once more, the snippet is exited there ->" }),
+	i(0),
 })
-
-

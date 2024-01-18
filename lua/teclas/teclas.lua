@@ -1,9 +1,9 @@
-function map(estado, tecla, accion) 
-  vim.keymap.set(estado, "<" .. tecla .. ">", accion, { silent = true, noremap = true }) 
+function map(estado, tecla, accion)
+	vim.keymap.set(estado, "<" .. tecla .. ">", accion, { silent = true, noremap = true })
 end
 
-function espacio(estado, tecla, accion) 
-  vim.keymap.set(estado, "<leader>" .. tecla, accion, { silent = true, noremap = true }) 
+function espacio(estado, tecla, accion)
+	vim.keymap.set(estado, "<leader>" .. tecla, accion, { silent = true, noremap = true })
 end
 
 -- Rest http
@@ -37,17 +37,11 @@ map("n", "C-p", '<cmd>lua require("renamer").rename()<cr>')
 espacio("n", "e", ":NvimTreeFocus<CR>")
 
 -- Rename text
-espacio('n', 'rn', ':lua require("renamer").rename()<cr>')
+espacio("n", "rn", ':lua require("renamer").rename()<cr>')
 
-local api = require('Comment.api')
-vim.keymap.set(
-  'n', 'gc', api.call('toggle.linewise', 'g@'),
-  { expr = true }
-)
-vim.keymap.set(
-  'n', '<C-.>', api.call('toggle.linewise.current', 'g@$'),
-  { expr = true }
-)
+local api = require("Comment.api")
+vim.keymap.set("n", "gc", api.call("toggle.linewise", "g@"), { expr = true })
+vim.keymap.set("n", "<C-.>", api.call("toggle.linewise.current", "g@$"), { expr = true })
 
 -- Formatear texto al guardar
 local augroup = vim.api.nvim_create_augroup
@@ -58,16 +52,7 @@ autocmd("BufWritePost", {
 	command = ":FormatWrite",
 })
 
-
-
 -- Telescope
-espacio('n', 'ff', ':Telescope find_files<CR>')
-espacio('n', 'fb', ':Telescope buffers<CR>')
-espacio('n', 'cs', ':Telescope colorscheme<CR>')
-
--- package-info
-espacio('n', 'pt', require("package-info").toggle)
-espacio('n', 'pi', require("package-info").install)
-espacio('n', 'pu', require("package-info").update)
-espacio('n', 'pd', require("package-info").delete)
-
+espacio("n", "ff", ":Telescope find_files<CR>")
+espacio("n", "fb", ":Telescope buffers<CR>")
+espacio("n", "cs", ":Telescope colorscheme<CR>")

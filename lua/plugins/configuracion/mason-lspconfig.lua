@@ -1,2 +1,1 @@
 require("mason-lspconfig").setup()
-
