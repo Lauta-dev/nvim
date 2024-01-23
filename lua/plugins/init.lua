@@ -24,9 +24,13 @@ local fileType = {
 	"astro",
 	"python",
 	"http",
+	"cs",
 }
 
 require("lazy").setup({
+	-- C#
+	{ "OmniSharp/omnisharp-vim" },
+
 	{ "nvim-tree/nvim-tree.lua" },
 	{ "nvim-tree/nvim-web-devicons" },
 	{ "williamboman/mason-lspconfig.nvim" },
@@ -137,6 +141,7 @@ require("lazy").setup({
 
 	-- Temas
 	{ "EdenEast/nightfox.nvim" },
+	{ "marko-cerovac/material.nvim" },
 
 	----------------------------------
 

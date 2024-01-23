@@ -1,6 +1,9 @@
 local set = vim.opt
 local bg = vim.cmd.colorscheme
-bg("carbonfox")
+local g = vim.g
+bg("material-deep-ocean")
+g.material_style = "deep ocean"
+g.OmniSharp_server_use_net6 = 1
 
 set.number = true -- Numero de filas
 set.tabstop = 2 --
