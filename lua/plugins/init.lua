@@ -23,30 +23,32 @@ local fileType = {
 	"css",
 	"astro",
 	"python",
-	"http",
 	"cs",
 }
 
 require("lazy").setup({
 	-- C#
-	{ "OmniSharp/omnisharp-vim" },
+	{ "OmniSharp/omnisharp-vim", ft = "cs" },
+
+	-- Notificaciones
+	{ "echasnovski/mini.nvim", version = false },
+	{ "rcarriga/nvim-notify" },
+
+	{ "onsails/lspkind.nvim" },
+
+	-- Alpha
+	{ "goolord/alpha-nvim" },
 
 	{ "nvim-tree/nvim-tree.lua" },
 	{ "nvim-tree/nvim-web-devicons" },
-	{ "williamboman/mason-lspconfig.nvim" },
-	{ "windwp/nvim-autopairs", event = "InsertEnter", opts = {} },
-	{
-		"m4xshen/autoclose.nvim",
-	},
-
-	{
-		"nvim-lualine/lualine.nvim",
-	},
-	{ "nvim-treesitter/nvim-treesitter" },
-
+	{ "windwp/nvim-autopairs", event = "InsertEnter", ft = fileType },
+	{ "m4xshen/autoclose.nvim", ft = fileType },
+	{ "nvim-lualine/lualine.nvim" },
+	{ "nvim-treesitter/nvim-treesitter", ft = fileType },
 	{
 		"nvim-telescope/telescope.nvim",
 		tag = "0.1.5",
+
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"tsakirist/telescope-lazy.nvim",
@@ -65,10 +67,9 @@ require("lazy").setup({
 	},
 
 	{ "lukas-reineke/indent-blankline.nvim" },
-	{ "rest-nvim/rest.nvim", ft = { "http" } },
-	{ "lewis6991/gitsigns.nvim" },
-
-	{ "xiyaowong/nvim-cursorword" },
+	{ "rest-nvim/rest.nvim", ft = "http" },
+	{ "lewis6991/gitsigns.nvim", ft = fileType },
+	{ "xiyaowong/nvim-cursorword", ft = fileType },
 	{
 		"williamboman/mason.nvim",
 		cmd = {
@@ -84,15 +85,16 @@ require("lazy").setup({
 		end,
 	},
 
-	{ "mfussenegger/nvim-lint" },
+	{ "mfussenegger/nvim-lint", ft = fileType },
 
 	{
 		"maxmellon/vim-jsx-pretty",
-		ft = "javascriptreact",
+		ft = { "javascriptreact", "typescriptreact" },
 	},
 
 	{
 		"filipdutescu/renamer.nvim",
+		ft = fileType,
 		branch = "master",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
@@ -107,7 +109,7 @@ require("lazy").setup({
 			require("Comment").setup()
 		end,
 	},
-	{ "mhartington/formatter.nvim" },
+	{ "mhartington/formatter.nvim", ft = fileType },
 
 	{
 		"akinsho/bufferline.nvim",

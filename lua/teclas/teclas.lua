@@ -6,6 +6,17 @@ function espacio(estado, tecla, accion)
 	vim.keymap.set(estado, "<leader>" .. tecla, accion, { silent = true, noremap = true })
 end
 
+-- asd
+espacio("n", "e", vim.diagnostic.open_float)
+map("n", "C-l", vim.diagnostic.open_float)
+
+-- Mover la linea
+--local moveline = require("moveline")
+--map("n", "<M-k>", moveline.up)
+--map("n", "<M-j>", moveline.down)
+--map("v", "<M-k>", moveline.block_up)
+--map("v", "<M-j>", moveline.block_down)
+
 -- Rest http
 map("n", "C-m", "<Plug>RestNvim")
 
@@ -34,14 +45,14 @@ map("t", "C-j", ":wincdmd ToggleTerm<CR>")
 map("n", "C-p", '<cmd>lua require("renamer").rename()<cr>')
 
 -- atajos con espacios
-espacio("n", "e", ":NvimTreeFocus<CR>")
+-- espacio("n", "e", ":NvimTreeFocus<CR>")
 
 -- Rename text
 espacio("n", "rn", ':lua require("renamer").rename()<cr>')
 
 local api = require("Comment.api")
-vim.keymap.set("n", "gc", api.call("toggle.linewise", "g@"), { expr = true })
-vim.keymap.set("n", "<C-.>", api.call("toggle.linewise.current", "g@$"), { expr = true })
+--vim.keymap.set("n", "gc", api.call("toggle.linewise", "g@"), { expr = true })
+vim.keymap.set("n", "<C-.>", api.call("toggle.linewise", "g@$"), { expr = true })
 
 -- Formatear texto al guardar
 local augroup = vim.api.nvim_create_augroup
