@@ -28,11 +28,10 @@ local fileType = {
 
 require("lazy").setup({
 	-- C#
-	{ "OmniSharp/omnisharp-vim", ft = "cs" },
+	-- { "OmniSharp/omnisharp-vim", ft = { "cs" } },
 
 	-- Notificaciones
 	{ "echasnovski/mini.nvim", version = false },
-	{ "rcarriga/nvim-notify" },
 
 	{ "onsails/lspkind.nvim" },
 

@@ -7,4 +7,4 @@ lspconfig.tailwindcss.setup({
 		"typescriptreact",
 	},
 })
-lspconfig.csharp_ls.setup({})
+require("lspconfig").csharp_ls.setup({})
