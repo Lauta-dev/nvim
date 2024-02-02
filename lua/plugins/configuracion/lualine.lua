@@ -36,6 +36,12 @@ local conditions = {
 -- Config
 local config = {
   options = {
+    disabled_filetypes = {
+			"alpha",
+			"NvimTree",
+			"Dashboard",
+			"Telescope",
+		},
     -- Disable sections and component separators
     component_separators = '',
     section_separators = '',

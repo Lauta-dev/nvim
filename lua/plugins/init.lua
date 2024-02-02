@@ -30,6 +30,14 @@ require("lazy").setup({
 	-- C#
 	-- { "OmniSharp/omnisharp-vim", ft = { "cs" } },
 
+  -- Plugin de obsidian
+  {
+    "epwalsh/obsidian.nvim",
+    version = "*",
+    ft = "markdown",
+    lazy = true
+  };
+
 	-- Notificaciones
 	{ "echasnovski/mini.nvim", version = false },
 
@@ -108,7 +116,7 @@ require("lazy").setup({
 			require("Comment").setup()
 		end,
 	},
-	{ "mhartington/formatter.nvim", ft = fileType },
+	{ "mhartington/formatter.nvim" },
 
 	{
 		"akinsho/bufferline.nvim",
@@ -119,18 +127,6 @@ require("lazy").setup({
 		end,
 	},
 
-	--
-	{
-		"jose-elias-alvarez/null-ls.nvim",
-		config = function()
-			local null_ls = require("null-ls")
-			null_ls.setup({
-				--null_ls.builtins.formatting.eslint_d,
-				null_ls.builtins.diagnostics.eslint_d,
-				-- null_ls.builtins.completion.spell,
-			})
-		end,
-	},
 
 	{
 		"nvim-lua/plenary.nvim",
@@ -141,9 +137,7 @@ require("lazy").setup({
 	},
 
 	-- Temas
-	{ "EdenEast/nightfox.nvim" },
-	{ "marko-cerovac/material.nvim" },
-
+	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 	----------------------------------
 
 	-- Lsp
