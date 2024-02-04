@@ -27,25 +27,7 @@ local fileType = {
 }
 
 require("lazy").setup({
-	-- C#
-	-- { "OmniSharp/omnisharp-vim", ft = { "cs" } },
-
-  -- Plugin de obsidian
-  {
-    "epwalsh/obsidian.nvim",
-    version = "*",
-    ft = "markdown",
-    lazy = true
-  };
-
-	-- Notificaciones
-	{ "echasnovski/mini.nvim", version = false },
-
 	{ "onsails/lspkind.nvim" },
-
-	-- Alpha
-	{ "goolord/alpha-nvim" },
-
 	{ "nvim-tree/nvim-tree.lua" },
 	{ "nvim-tree/nvim-web-devicons" },
 	{ "windwp/nvim-autopairs", event = "InsertEnter", ft = fileType },
@@ -147,6 +129,9 @@ require("lazy").setup({
 	{ "hrsh7th/cmp-path", ft = fileType },
 	{ "hrsh7th/cmp-cmdline", ft = fileType },
 	{ "hrsh7th/nvim-cmp", ft = fileType },
+
+
+  {"williamboman/mason-lspconfig.nvim", ft = fileType},
 
 	-- snippets
 	{ "saadparwaiz1/cmp_luasnip", ft = fileType },
