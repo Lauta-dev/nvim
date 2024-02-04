@@ -1,8 +1,6 @@
 local set = vim.opt
 local bg = vim.cmd.colorscheme
-local g = vim.g
 bg("catppuccin-mocha")
-g.OmniSharp_server_use_net6 = 1
 
 set.number = true -- Numero de filas
 set.tabstop = 2 --
