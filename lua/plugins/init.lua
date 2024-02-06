@@ -27,13 +27,59 @@ local fileType = {
 }
 
 require("lazy").setup({
-	{ "onsails/lspkind.nvim" },
 	{ "nvim-tree/nvim-tree.lua" },
 	{ "nvim-tree/nvim-web-devicons" },
 	{ "windwp/nvim-autopairs", event = "InsertEnter", ft = fileType },
 	{ "m4xshen/autoclose.nvim", ft = fileType },
 	{ "nvim-lualine/lualine.nvim" },
 	{ "nvim-treesitter/nvim-treesitter", ft = fileType },
+
+	-- Preview de archivo markdown
+	{ "ellisonleao/glow.nvim", cmd = "Glow" },
+
+	-- Plugin para usar Obsidian en Neovim
+	{
+		"epwalsh/obsidian.nvim",
+		version = "*", -- recommended, use latest release instead of latest commit
+		lazy = true,
+		ft = "markdown",
+		-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+		-- event = {
+		--   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+		--   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
+		--   "BufReadPre path/to/my-vault/**.md",
+		--   "BufNewFile path/to/my-vault/**.md",
+		-- },
+		dependencies = {
+			-- Required.
+			"nvim-lua/plenary.nvim",
+
+			-- see below for full list of optional dependencies 👇
+		},
+		opts = {
+			workspaces = {
+				{
+					name = "personal",
+					path = "~/.obsidian/",
+				},
+			},
+
+			-- see below for full list of options 👇
+		},
+	},
+
+	{
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		opts = {
+			-- add any options here
+		},
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+			"rcarriga/nvim-notify",
+		},
+	},
+
 	{
 		"nvim-telescope/telescope.nvim",
 		tag = "0.1.5",
@@ -55,7 +101,37 @@ require("lazy").setup({
 		cmd = "ToggleTerm",
 	},
 
-	{ "lukas-reineke/indent-blankline.nvim" },
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		ft = fileType,
+		config = function()
+			local highlight = {
+				"RainbowRed",
+				"RainbowYellow",
+				"RainbowBlue",
+				"RainbowOrange",
+				"RainbowGreen",
+				"RainbowViolet",
+				"RainbowCyan",
+			}
+
+			local hooks = require("ibl.hooks")
+			hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+				vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#E06C75" })
+				vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#E5C07B" })
+				vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#61AFEF" })
+				vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#D19A66" })
+				vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#98C379" })
+				vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#C678DD" })
+				vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#56B6C2" })
+			end)
+
+			vim.g.rainbow_delimiters = { highlight = highlight }
+			require("ibl").setup({ scope = { highlight = highlight } })
+
+			hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
+		end,
+	},
 	{ "rest-nvim/rest.nvim", ft = "http" },
 	{ "lewis6991/gitsigns.nvim", ft = fileType },
 	{ "xiyaowong/nvim-cursorword", ft = fileType },
@@ -98,17 +174,17 @@ require("lazy").setup({
 			require("Comment").setup()
 		end,
 	},
-	{ "mhartington/formatter.nvim" },
+	{ "mhartington/formatter.nvim", ft = fileType },
 
 	{
 		"akinsho/bufferline.nvim",
 		version = "*",
+		ft = fileType,
 		dependencies = "nvim-tree/nvim-web-devicons",
 		config = function()
 			require("bufferline").setup({})
 		end,
 	},
-
 
 	{
 		"nvim-lua/plenary.nvim",
@@ -129,15 +205,15 @@ require("lazy").setup({
 	{ "hrsh7th/cmp-path", ft = fileType },
 	{ "hrsh7th/cmp-cmdline", ft = fileType },
 	{ "hrsh7th/nvim-cmp", ft = fileType },
+	{ "onsails/lspkind.nvim", ft = fileType },
 
-
-  {"williamboman/mason-lspconfig.nvim", ft = fileType},
+	{ "williamboman/mason-lspconfig.nvim", ft = fileType },
 
 	-- snippets
 	{ "saadparwaiz1/cmp_luasnip", ft = fileType },
 	{
 		"L3MON4D3/LuaSnip",
-		dependencies = { "rafamadriz/friendly-snippets" },
 		ft = fileType,
+		dependencies = { "rafamadriz/friendly-snippets" },
 	},
 })

@@ -6,6 +6,10 @@ require("formatter").setup({
 			require("formatter.filetypes.lua").stylua,
 		},
 
+		csharp = {
+			require("formatter.filetypes.cs").csharpier,
+		},
+
 		typescript = {
 			require("formatter.filetypes.typescript").biome,
 		},

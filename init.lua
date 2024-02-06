@@ -13,5 +13,3 @@ for dir in io.popen([[ ls /home/lauta/.config/nvim/lua/plugins/configuracion/ ]]
 	local a = dir:gsub(".lua", "")
 	plugin_configuration(a)
 end
-
-
