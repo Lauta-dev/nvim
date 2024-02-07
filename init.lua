@@ -26,6 +26,7 @@ local function loadPlugins()
 
 		if not success then
 			-- Se usa una notificación que se ejecuta cada ves para informar el error, no desaparece hasta arreglarlo
+			-- O quitar el require() de la configuración
 			require("notify")("Error loading module '" .. module_name .. "': " .. module)
 		end
 	end

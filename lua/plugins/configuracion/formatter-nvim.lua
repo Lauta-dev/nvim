@@ -6,6 +6,10 @@ require("formatter").setup({
 			require("formatter.filetypes.lua").stylua,
 		},
 
+		markdown = {
+			require("formatter.filetypes.markdown").cbfmt,
+		},
+
 		csharp = {
 			require("formatter.filetypes.cs").csharpier,
 		},

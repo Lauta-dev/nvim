@@ -1,21 +1,16 @@
-function map(estado, tecla, accion)
+local function map(estado, tecla, accion)
 	vim.keymap.set(estado, "<" .. tecla .. ">", accion, { silent = true, noremap = true })
 end
 
-function espacio(estado, tecla, accion)
+local function espacio(estado, tecla, accion)
 	vim.keymap.set(estado, "<leader>" .. tecla, accion, { silent = true, noremap = true })
 end
 
--- asd
-espacio("n", "e", vim.diagnostic.open_float)
+-- Ver el dianostico
 map("n", "C-l", vim.diagnostic.open_float)
 
--- Mover la linea
---local moveline = require("moveline")
---map("n", "<M-k>", moveline.up)
---map("n", "<M-j>", moveline.down)
---map("v", "<M-k>", moveline.block_up)
---map("v", "<M-j>", moveline.block_down)
+-- Ver priview de un archivo markdown
+espacio("n", "m", ":Glow")
 
 -- Rest http
 map("n", "C-m", "<Plug>RestNvim")
@@ -27,7 +22,8 @@ map("n", "C-s", ":w!<CR>")
 map("n", "C-x", ":q!<CR>")
 
 -- file explorer
-map("n", "C-b", ":NvimTreeToggle<CR>")
+map("n", "C-b", ":Neotree toggle<CR>")
+espacio("n", "v", ":Neotree focus<CR>")
 
 -- buffers
 map("n", "S-l", ":BufferLineCycleNext<CR>")
@@ -42,13 +38,8 @@ map("n", "p", '"+p')
 map("n", "C-j", ":ToggleTerm<CR>")
 map("t", "C-j", ":wincdmd ToggleTerm<CR>")
 
+-- Renombrar variables
 map("n", "C-p", '<cmd>lua require("renamer").rename()<cr>')
-
--- atajos con espacios
--- espacio("n", "e", ":NvimTreeFocus<CR>")
-
--- Rename text
-espacio("n", "rn", ':lua require("renamer").rename()<cr>')
 
 local api = require("Comment.api")
 --vim.keymap.set("n", "gc", api.call("toggle.linewise", "g@"), { expr = true })

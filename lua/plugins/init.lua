@@ -27,15 +27,22 @@ local fileType = {
 }
 
 require("lazy").setup({
-	{ "nvim-tree/nvim-tree.lua" },
 	{ "nvim-tree/nvim-web-devicons" },
 	{ "windwp/nvim-autopairs", event = "InsertEnter", ft = fileType },
-	{ "m4xshen/autoclose.nvim", ft = fileType },
 	{ "nvim-lualine/lualine.nvim" },
 	{ "nvim-treesitter/nvim-treesitter", ft = fileType },
 
-	-- Preview de archivo markdown
-	{ "ellisonleao/glow.nvim", cmd = "Glow" },
+	-- Administrador de archivos
+	{
+		"nvim-neo-tree/neo-tree.nvim",
+		branch = "v3.x",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+			"MunifTanjim/nui.nvim",
+			-- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
+		},
+	},
 
 	-- Plugin para usar Obsidian en Neovim
 	{
@@ -65,18 +72,6 @@ require("lazy").setup({
 			},
 
 			-- see below for full list of options 👇
-		},
-	},
-
-	{
-		"folke/noice.nvim",
-		event = "VeryLazy",
-		opts = {
-			-- add any options here
-		},
-		dependencies = {
-			"MunifTanjim/nui.nvim",
-			"rcarriga/nvim-notify",
 		},
 	},
 
@@ -134,7 +129,6 @@ require("lazy").setup({
 	},
 	{ "rest-nvim/rest.nvim", ft = "http" },
 	{ "lewis6991/gitsigns.nvim", ft = fileType },
-	{ "xiyaowong/nvim-cursorword", ft = fileType },
 	{
 		"williamboman/mason.nvim",
 		cmd = {
@@ -151,11 +145,6 @@ require("lazy").setup({
 	},
 
 	{ "mfussenegger/nvim-lint", ft = fileType },
-
-	{
-		"maxmellon/vim-jsx-pretty",
-		ft = { "javascriptreact", "typescriptreact" },
-	},
 
 	{
 		"filipdutescu/renamer.nvim",
