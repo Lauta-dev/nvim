@@ -32,6 +32,9 @@ require("lazy").setup({
 	{ "nvim-lualine/lualine.nvim" },
 	{ "nvim-treesitter/nvim-treesitter", ft = fileType },
 
+	-- "Hacer el fondo transparente"
+	{ "xiyaowong/transparent.nvim" },
+
 	-- Administrador de archivos
 	{
 		"nvim-neo-tree/neo-tree.nvim",
@@ -40,7 +43,6 @@ require("lazy").setup({
 			"nvim-lua/plenary.nvim",
 			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
 			"MunifTanjim/nui.nvim",
-			-- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
 		},
 	},
 
