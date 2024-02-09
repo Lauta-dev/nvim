@@ -12,7 +12,6 @@ lspconfig.tailwindcss.setup({
 lspconfig.tsserver.setup({})
 lspconfig.bashls.setup({})
 lspconfig.cssls.setup({})
-lspconfig.cypher_ls.setup({})
 lspconfig.lua_ls.setup({})
 lspconfig.angularls.setup({})
 lspconfig.csharp_ls.setup({})

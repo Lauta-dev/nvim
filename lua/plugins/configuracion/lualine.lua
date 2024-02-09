@@ -7,6 +7,8 @@ lualine.setup({
 			"NvimTree",
 			"Dashboard",
 			"Telescope",
+			"Neotree",
+			"neo-tree",
 		},
 		sections = {
 			lualine_a = { "mode" },

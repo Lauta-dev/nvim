@@ -1,6 +1,6 @@
 local opt = vim.opt
 local bg = vim.cmd.colorscheme
-bg("catppuccin-mocha")
+bg("tokyonight-night")
 
 opt.shortmess:append("sI")
 opt.number = true -- Numero de filas
