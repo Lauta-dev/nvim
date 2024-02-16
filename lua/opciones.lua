@@ -3,7 +3,7 @@ local bg = vim.cmd.colorscheme
 bg("tokyonight-night")
 
 vim.g.mapleader = " " -- Uso de la tecla espacio
---opt.shortmess:append("sI")
+opt.shortmess:append("sI")
 opt.number = true -- Numero de filas
 opt.tabstop = 2 --
 opt.expandtab = true -- Usar espacios en lugar de tabulaciones
