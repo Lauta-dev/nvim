@@ -1,5 +1,4 @@
 local cmp = require("cmp")
-local lspkind = require("lspkind")
 
 require("luasnip.loaders.from_vscode").lazy_load()
 require("luasnip.loaders.from_snipmate").lazy_load()
@@ -35,18 +34,7 @@ cmp.setup({
 })
 
 formatting =
-	{
-		format = lspkind.cmp_format({
-			mode = "symbol_text",
-			menu = {
-				buffer = "[Buffer]",
-				nvim_lsp = "[LSP]",
-				luasnip = "[LuaSnip]",
-				nvim_lua = "[Lua]",
-				latex_symbols = "[Latex]",
-			},
-		}),
-	}, cmp.setup.cmdline(":", {
+	cmp.setup.cmdline(":", {
 		mapping = cmp.mapping.preset.cmdline(),
 		sources = cmp.config.sources({
 			{ name = "path" },

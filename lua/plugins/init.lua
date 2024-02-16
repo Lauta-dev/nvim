@@ -1,39 +1,46 @@
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-	vim.fn.system({
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"https://github.com/folke/lazy.nvim.git",
-		"--branch=stable", -- latest stable release
-		lazypath,
-	})
-end
-vim.opt.rtp:prepend(lazypath)
-
-local fileType = {
-	"typescript",
-	"javascript",
-	"bash",
-	"javascriptreact",
-	"typescriptreact",
-	"markdown",
-	"lua",
-	"html",
-	"css",
-	"astro",
-	"python",
-	"cs",
-}
+require("plugins/file_type")
 
 require("lazy").setup({
-	{ "nvim-tree/nvim-web-devicons" },
-	{ "windwp/nvim-autopairs", event = "InsertEnter", ft = fileType },
-	{ "nvim-lualine/lualine.nvim" },
-	{ "nvim-treesitter/nvim-treesitter", ft = fileType },
+	{
+		"j-hui/fidget.nvim",
+		opts = {
+			-- options
+		},
+		config = function()
+			require("fidget").setup()
+		end,
+	},
 
-	-- "Hacer el fondo transparente"
-	{ "xiyaowong/transparent.nvim" },
+	{ "nvim-tree/nvim-web-devicons" },
+	{ "windwp/nvim-autopairs", event = "InsertEnter", ft = file_type },
+	{ "nvim-lualine/lualine.nvim" },
+	{ "nvim-treesitter/nvim-treesitter", ft = file_type },
+
+	{
+		"linrongbin16/lsp-progress.nvim",
+		config = function()
+			require("lsp-progress").setup()
+		end,
+	},
+
+	-- Agreag popop para ver diferentes partes del código
+	{
+		"SmiteshP/nvim-navbuddy",
+		dependencies = {
+			"SmiteshP/nvim-navic",
+			"MunifTanjim/nui.nvim",
+		},
+		opts = { lsp = { auto_attach = true } },
+	},
+
+	-- Agrega una linea para ver cuantas veces se usa la funcion
+	{
+		"Wansmer/symbol-usage.nvim",
+		event = "BufReadPre", -- need run before LspAttach if you use nvim 0.9. On 0.10 use 'LspAttach'
+		config = function()
+			require("symbol-usage").setup()
+		end,
+	},
 
 	-- Administrador de archivos
 	{
@@ -41,29 +48,19 @@ require("lazy").setup({
 		branch = "v3.x",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
-			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+			"nvim-tree/nvim-web-devicons",
 			"MunifTanjim/nui.nvim",
 		},
 	},
 
-	-- Plugin para usar Obsidian en Neovim
+	-- Usar algunas funciones de Obsidian en Neovim
 	{
 		"epwalsh/obsidian.nvim",
-		version = "*", -- recommended, use latest release instead of latest commit
+		version = "*",
 		lazy = true,
 		ft = "markdown",
-		-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
-		-- event = {
-		--   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-		--   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
-		--   "BufReadPre path/to/my-vault/**.md",
-		--   "BufNewFile path/to/my-vault/**.md",
-		-- },
 		dependencies = {
-			-- Required.
 			"nvim-lua/plenary.nvim",
-
-			-- see below for full list of optional dependencies 👇
 		},
 		opts = {
 			workspaces = {
@@ -72,8 +69,6 @@ require("lazy").setup({
 					path = "~/.obsidian/",
 				},
 			},
-
-			-- see below for full list of options 👇
 		},
 	},
 
@@ -100,7 +95,7 @@ require("lazy").setup({
 
 	{
 		"lukas-reineke/indent-blankline.nvim",
-		ft = fileType,
+		ft = file_type,
 		config = function()
 			local highlight = {
 				"RainbowRed",
@@ -130,7 +125,7 @@ require("lazy").setup({
 		end,
 	},
 	{ "rest-nvim/rest.nvim", ft = "http" },
-	{ "lewis6991/gitsigns.nvim", ft = fileType },
+	{ "lewis6991/gitsigns.nvim", ft = file_type },
 	{
 		"williamboman/mason.nvim",
 		cmd = {
@@ -146,11 +141,11 @@ require("lazy").setup({
 		end,
 	},
 
-	{ "mfussenegger/nvim-lint", ft = fileType },
+	{ "mfussenegger/nvim-lint", ft = file_type },
 
 	{
 		"filipdutescu/renamer.nvim",
-		ft = fileType,
+		ft = file_type,
 		branch = "master",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
@@ -160,21 +155,21 @@ require("lazy").setup({
 
 	{
 		"numToStr/Comment.nvim",
-		ft = fileType,
+		ft = file_type,
 		config = function()
 			require("Comment").setup()
 		end,
 	},
-	{ "mhartington/formatter.nvim", ft = fileType },
+	{ "mhartington/formatter.nvim", ft = file_type },
 
 	{
 		"akinsho/bufferline.nvim",
 		version = "*",
-		ft = fileType,
-		dependencies = "nvim-tree/nvim-web-devicons",
+		ft = file_type,
 		config = function()
 			require("bufferline").setup({})
 		end,
+		dependencies = "nvim-tree/nvim-web-devicons",
 	},
 
 	{
@@ -192,21 +187,20 @@ require("lazy").setup({
 	----------------------------------
 
 	-- Lsp
-	{ "neovim/nvim-lspconfig", ft = fileType },
-	{ "hrsh7th/cmp-nvim-lsp", ft = fileType },
-	{ "hrsh7th/cmp-buffer", ft = fileType },
-	{ "hrsh7th/cmp-path", ft = fileType },
-	{ "hrsh7th/cmp-cmdline", ft = fileType },
-	{ "hrsh7th/nvim-cmp", ft = fileType },
-	{ "onsails/lspkind.nvim", ft = fileType },
+	{ "neovim/nvim-lspconfig", ft = file_type },
+	{ "hrsh7th/cmp-nvim-lsp", ft = file_type },
+	{ "hrsh7th/cmp-buffer", ft = file_type },
+	{ "hrsh7th/cmp-path", ft = file_type },
+	{ "hrsh7th/cmp-cmdline", ft = file_type },
+	{ "hrsh7th/nvim-cmp", ft = file_type },
 
-	{ "williamboman/mason-lspconfig.nvim", ft = fileType },
+	{ "williamboman/mason-lspconfig.nvim", ft = file_type },
 
 	-- snippets
-	{ "saadparwaiz1/cmp_luasnip", ft = fileType },
+	{ "saadparwaiz1/cmp_luasnip", ft = file_type },
 	{
 		"L3MON4D3/LuaSnip",
-		ft = fileType,
+		ft = file_type,
 		dependencies = { "rafamadriz/friendly-snippets" },
 	},
 })

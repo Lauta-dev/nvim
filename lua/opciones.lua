@@ -2,7 +2,8 @@ local opt = vim.opt
 local bg = vim.cmd.colorscheme
 bg("tokyonight-night")
 
-opt.shortmess:append("sI")
+vim.g.mapleader = " " -- Uso de la tecla espacio
+--opt.shortmess:append("sI")
 opt.number = true -- Numero de filas
 opt.tabstop = 2 --
 opt.expandtab = true -- Usar espacios en lugar de tabulaciones
@@ -18,5 +19,3 @@ opt.cursorline = true -- El cursor estara resaltado
 opt.clipboard = "unnamedplus" -- Habilitar portapapeles
 opt.termguicolors = true --
 opt.conceallevel = 2
-
--- -- -- -- --

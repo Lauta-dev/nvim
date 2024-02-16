@@ -1,3 +1,4 @@
+require("plugins/lazy")
 require("plugins/init")
 require("opciones")
 
@@ -5,7 +6,7 @@ require("teclas/teclas")
 require("config/diagnostic")
 require("config/diagnostic-show-border")
 
-local function loadPlugins()
+local function load_plugins()
 	local config_folder = "plugins/configuracion/"
 	local home_dir = os.getenv("HOME") -- Obtener el path del directorio HOME
 	local config_path = home_dir .. "/.config/nvim/lua/" .. config_folder -- Path de la configuracion de los plugins
@@ -27,11 +28,11 @@ local function loadPlugins()
 		if not success then
 			-- Se usa una notificación que se ejecuta cada ves para informar el error, no desaparece hasta arreglarlo
 			-- O quitar el require() de la configuración
-			require("notify")("Error loading module '" .. module_name .. "': " .. module)
+			vim.notify("Error loading module '" .. module_name .. "': " .. module)
 		end
 	end
 
 	p_file:close()
 end
 
-loadPlugins()
+load_plugins()

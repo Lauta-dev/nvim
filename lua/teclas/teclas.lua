@@ -1,45 +1,47 @@
-local function map(estado, tecla, accion)
-	vim.keymap.set(estado, "<" .. tecla .. ">", accion, { silent = true, noremap = true })
+local key_map = vim.keymap.set
+
+local function use_normal_key(estado, tecla, accion)
+	key_map(estado, "<" .. tecla .. ">", accion, { silent = true, noremap = true })
 end
 
-local function espacio(estado, tecla, accion)
-	vim.keymap.set(estado, "<leader>" .. tecla, accion, { silent = true, noremap = true })
+local function use_key_space(estado, tecla, accion)
+	key_map(estado, "<leader>" .. tecla, accion, { silent = true, noremap = true })
 end
 
 -- Ver el dianostico
-map("n", "C-l", vim.diagnostic.open_float)
+use_normal_key("n", "C-l", vim.diagnostic.open_float)
 
--- Ver priview de un archivo markdown
-espacio("n", "m", ":Glow")
+use_normal_key("n", "C-s", ":w!<CR>") -- Guardar los cambios
+use_normal_key("n", "C-x", ":q!<CR>") -- Cerrar el archivo sin guardar
 
--- Rest http
-map("n", "C-m", "<Plug>RestNvim")
-
--- key <leader>
-vim.g.mapleader = " "
-
-map("n", "C-s", ":w!<CR>")
-map("n", "C-x", ":q!<CR>")
-
--- file explorer
-map("n", "C-b", ":Neotree toggle<CR>")
-espacio("n", "v", ":Neotree focus<CR>")
+-- Explorador de archivos
+use_normal_key("n", "C-b", ":Neotree toggle<CR>") -- Abrir y cierra
+use_key_space("n", "v", ":Neotree focus<CR>") -- Mueve el cursor al explorador de archivos
 
 -- buffers
-map("n", "S-l", ":BufferLineCycleNext<CR>")
-map("n", "S-k", ":BufferLineCyclePrev<CR>")
-map("n", "C-w", ":bd<CR>")
+use_normal_key("n", "S-l", ":BufferLineCycleNext<CR>") -- Ir al siguiente buffer
+use_normal_key("n", "S-k", ":BufferLineCyclePrev<CR>") -- Ir al buffer anterior
+use_normal_key("n", "C-c", ":bd<CR>") -- Cerrar el buffer (Cerrar el fichero)
 
--- copy text
-map("n", "y", '"+y')
-map("n", "p", '"+p')
+-- Crear nuevo archivo
+use_normal_key("n", "C-n", ":new<CR>")
+
+-- Pasar el cursor de una ventana a otra
+use_normal_key("n", "C-A-Up", ":wincmd k<CR>")
+use_normal_key("n", "C-A-Down", ":wincmd j<CR>")
+use_normal_key("n", "C-A-Left", ":wincmd h<CR>")
+use_normal_key("n", "C-A-Right", ":wincmd l<CR>")
+
+-- Copiar texto al portapapeles (en Linux se necesita xclip)
+use_normal_key("n", "y", '"+y')
+use_normal_key("n", "p", '"+p')
 
 -- terminal
-map("n", "C-j", ":ToggleTerm<CR>")
-map("t", "C-j", ":wincdmd ToggleTerm<CR>")
+use_normal_key("n", "C-j", ":ToggleTerm<CR>")
+use_normal_key("t", "C-j", ":wincdmd ToggleTerm<CR>")
 
 -- Renombrar variables
-map("n", "C-p", '<cmd>lua require("renamer").rename()<cr>')
+use_normal_key("n", "C-p", '<cmd>lua require("renamer").rename()<cr>')
 
 local api = require("Comment.api")
 --vim.keymap.set("n", "gc", api.call("toggle.linewise", "g@"), { expr = true })
@@ -55,6 +57,6 @@ autocmd("BufWritePost", {
 })
 
 -- Telescope
-espacio("n", "ff", ":Telescope find_files<CR>")
-espacio("n", "fb", ":Telescope buffers<CR>")
-espacio("n", "cs", ":Telescope colorscheme<CR>")
+use_key_space("n", "ff", ":Telescope find_files<CR>")
+use_key_space("n", "fb", ":Telescope buffers<CR>")
+use_key_space("n", "cs", ":Telescope colorscheme<CR>")
