@@ -1,27 +1,10 @@
 require("plugins/file_type")
 
 require("lazy").setup({
-	{
-		"j-hui/fidget.nvim",
-		opts = {
-			-- options
-		},
-		config = function()
-			require("fidget").setup()
-		end,
-	},
-
 	{ "nvim-tree/nvim-web-devicons" },
 	{ "windwp/nvim-autopairs", event = "InsertEnter", ft = file_type },
 	{ "nvim-lualine/lualine.nvim" },
 	{ "nvim-treesitter/nvim-treesitter", ft = file_type },
-
-	{
-		"linrongbin16/lsp-progress.nvim",
-		config = function()
-			require("lsp-progress").setup()
-		end,
-	},
 
 	-- Agreag popop para ver diferentes partes del código
 	{
@@ -44,13 +27,10 @@ require("lazy").setup({
 
 	-- Administrador de archivos
 	{
-		"nvim-neo-tree/neo-tree.nvim",
-		branch = "v3.x",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-tree/nvim-web-devicons",
-			"MunifTanjim/nui.nvim",
-		},
+		"nvim-tree/nvim-tree.lua",
+		config = function()
+			require("nvim-tree").setup()
+		end,
 	},
 
 	-- Usar algunas funciones de Obsidian en Neovim
@@ -124,7 +104,15 @@ require("lazy").setup({
 			hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
 		end,
 	},
-	{ "rest-nvim/rest.nvim", ft = "http" },
+	{
+		"rest-nvim/rest.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		config = function()
+			require("rest-nvim").setup({
+				--- Get the same options from Packer setup
+			})
+		end,
+	},
 	{ "lewis6991/gitsigns.nvim", ft = file_type },
 	{
 		"williamboman/mason.nvim",
@@ -181,8 +169,6 @@ require("lazy").setup({
 	},
 
 	-- Temas
-	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
-	{ "olimorris/onedarkpro.nvim" },
 	{ "folke/tokyonight.nvim" },
 	----------------------------------
 

@@ -11,6 +11,7 @@ local file_type = {
 	"astro",
 	"python",
 	"cs",
+	"http",
 }
 
 return file_type
