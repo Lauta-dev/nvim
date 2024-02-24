@@ -2,16 +2,12 @@ local opt = vim.opt
 local api = vim.api
 local bg = vim.cmd.colorscheme
 local g = vim.g
+local lsp = vim.lsp
+local _borden = "single"
 
-function Colore(color)
-	color = color or "tokyonight-night"
-	bg(color)
-
-	vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-	vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-end
-
-Colore()
+bg("tokyonight-night")
+api.nvim_set_hl(0, "Normal", { bg = "none" })
+api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
 g.loaded_netrw = 1
 g.loaded_netrwPlugin = 1
@@ -39,3 +35,17 @@ opt.cursorline = true -- El cursor estara resaltado
 opt.clipboard = "unnamedplus" -- Habilitar portapapeles
 opt.termguicolors = true --
 opt.conceallevel = 2
+
+vim.diagnostic.config({
+	update_in_insert = true,
+	signs = true,
+	underline = false,
+	virtual_text = true,
+	virtual_lines = false,
+
+	float = {
+		focusable = true,
+		border = _borden,
+		header = false,
+	},
+})

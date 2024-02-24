@@ -1,20 +1,16 @@
-require("plugins/lazy")
 require("plugins/init")
-require("opciones")
-
-require("teclas/teclas")
-require("config/diagnostic")
-require("config/diagnostic-show-border")
+require("editor_config")
+require("keymap")
 
 local function load_plugins()
-	local config_folder = "plugins/configuracion/"
+	local config_folder = "plugins/configs/"
 	local home_dir = os.getenv("HOME") -- Obtener el path del directorio HOME
 	local config_path = home_dir .. "/.config/nvim/lua/" .. config_folder -- Path de la configuracion de los plugins
 	local p_file = io.popen('ls  "' .. config_path .. '"') -- Se crea un array con todos los archivos
 
 	-- Verificar si p_file es nil
 	if p_file == nil then
-		print("No se pudo abrir el directorio: " .. config_path)
+		vim.notify("No se pudo abrir el directorio: " .. config_path)
 		return
 	end
 
