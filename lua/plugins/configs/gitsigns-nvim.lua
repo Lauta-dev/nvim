@@ -1,4 +1,4 @@
-require("gitsigns").setup({
+local M = {
 	signs = {
 		add = { text = "│" },
 		change = { text = "│" },
@@ -40,4 +40,6 @@ require("gitsigns").setup({
 	yadm = {
 		enable = false,
 	},
-})
+}
+
+return M
