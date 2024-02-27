@@ -12,6 +12,7 @@ local file_type = {
 	"python",
 	"cs",
 	"http",
+	"sh",
 }
 
 return file_type
