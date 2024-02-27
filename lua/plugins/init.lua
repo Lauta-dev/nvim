@@ -1,32 +1,70 @@
-require("plugins/lazy")
-require("plugins/file_type")
+local file_type = require("plugins/file_type")
+local lualine_opts = require("plugins/configs/lualine")
 
 require("lazy").setup({
 	-- Dashboard
-	{ "goolord/alpha-nvim" },
+	{
+		"goolord/alpha-nvim",
+		config = function()
+			local dashboard = require("alpha.themes.dashboard")
+			local config = require("plugins.configs.alpha").alpha_config(dashboard)
+			require("alpha").setup(config)
+		end,
+	},
 
+	-- Resalta los comantarios que tendra TODO:
+	{
+		"folke/todo-comments.nvim",
+		ft = file_type,
+		dependencies = { "nvim-lua/plenary.nvim" },
+		config = function()
+			require("todo-comments").setup()
+		end,
+	},
+
+	-- Iconos
 	{ "nvim-tree/nvim-web-devicons" },
-	{ "windwp/nvim-autopairs", event = "InsertEnter", ft = file_type },
-	{ "nvim-lualine/lualine.nvim" },
-	{ "nvim-treesitter/nvim-treesitter", ft = file_type },
+
+	-- Cerrar paréntencis
+	{
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		ft = file_type,
+		config = function()
+			require("nvim-autopairs").setup({})
+		end,
+	},
+
+	-- Barra de estado
+	{
+		"nvim-lualine/lualine.nvim",
+		ft = file_type,
+		config = function()
+			require("lualine").setup(lualine_opts)
+		end,
+	},
+
+	-- Resaltador de sintaxis
+	{
+		"nvim-treesitter/nvim-treesitter",
+		ft = file_type,
+		config = function()
+			require("nvim-treesitter.configs").setup(require("plugins.configs.nvim-treesitter"))
+		end,
+	},
 
 	-- Agreag popop para ver diferentes partes del código
 	{
 		"SmiteshP/nvim-navbuddy",
+		ft = file_type,
 		dependencies = {
 			"SmiteshP/nvim-navic",
 			"MunifTanjim/nui.nvim",
 		},
-		opts = { lsp = { auto_attach = true } },
-	},
-
-	-- Agrega una linea para ver cuantas veces se usa la funcion
-	{
-		"Wansmer/symbol-usage.nvim",
-		event = "BufReadPre", -- need run before LspAttach if you use nvim 0.9. On 0.10 use 'LspAttach'
 		config = function()
-			require("symbol-usage").setup()
+			require("nvim-navbuddy").setup()
 		end,
+		opts = require("plugins.configs.navbody"),
 	},
 
 	-- Administrador de archivos
@@ -35,25 +73,6 @@ require("lazy").setup({
 		config = function()
 			require("nvim-tree").setup()
 		end,
-	},
-
-	-- Usar algunas funciones de Obsidian en Neovim
-	{
-		"epwalsh/obsidian.nvim",
-		version = "*",
-		lazy = true,
-		ft = "markdown",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-		},
-		opts = {
-			workspaces = {
-				{
-					name = "personal",
-					path = "~/.obsidian/",
-				},
-			},
-		},
 	},
 
 	{
@@ -72,6 +91,7 @@ require("lazy").setup({
 		},
 	},
 
+	-- Terminal integrada
 	{
 		"akinsho/toggleterm.nvim",
 		cmd = "ToggleTerm",
@@ -80,17 +100,30 @@ require("lazy").setup({
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		ft = file_type,
-	},
-	{
-		"rest-nvim/rest.nvim",
-		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
-			require("rest-nvim").setup({
-				--- Get the same options from Packer setup
-			})
+			local hooks = require("ibl.hooks")
+			local config = require("plugins.configs.indent-blankline")
+			config.load_rainbow(hooks)
+			require("ibl").setup({ scope = { highlight = config.highlight } })
 		end,
 	},
-	{ "lewis6991/gitsigns.nvim", ft = file_type },
+
+	-- Ayuda para hacer peticiones desde archivos .http
+	{
+		"rest-nvim/rest.nvim",
+		ft = "http",
+		dependencies = { "nvim-lua/plenary.nvim" },
+	},
+
+	-- Ayuda para git
+	{
+		"lewis6991/gitsigns.nvim",
+		ft = file_type,
+		config = function()
+			require("gitsigns").setup(require("plugins.configs.gitsigns-nvim"))
+		end,
+	},
+
 	{
 		"williamboman/mason.nvim",
 		cmd = {
@@ -106,27 +139,20 @@ require("lazy").setup({
 		end,
 	},
 
+	-- Linter
 	{ "mfussenegger/nvim-lint", ft = file_type },
 
+	-- Formateador de texto
 	{
-		"filipdutescu/renamer.nvim",
+		"mhartington/formatter.nvim",
 		ft = file_type,
-		branch = "master",
-		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
-			require("renamer").setup()
+			local opts = require("plugins.configs.formatter-nvim")
+			require("formatter").setup(opts)
 		end,
 	},
 
-	{
-		"numToStr/Comment.nvim",
-		ft = file_type,
-		config = function()
-			require("Comment").setup()
-		end,
-	},
-	{ "mhartington/formatter.nvim", ft = file_type },
-
+	-- Ver archivos abiertos
 	{
 		"akinsho/bufferline.nvim",
 		version = "*",
@@ -137,6 +163,7 @@ require("lazy").setup({
 		dependencies = "nvim-tree/nvim-web-devicons",
 	},
 
+	-- Dep de otros plugins
 	{
 		"nvim-lua/plenary.nvim",
 		cmd = { "PlenaryBustedFile", "PlenaryBustedDirectory" },
@@ -147,23 +174,67 @@ require("lazy").setup({
 
 	-- Temas
 	{ "folke/tokyonight.nvim" },
+
 	----------------------------------
 
 	-- Lsp
-	{ "neovim/nvim-lspconfig", ft = file_type },
+	{
+		"williamboman/mason-lspconfig.nvim",
+		ft = file_type,
+		config = function()
+			require("mason-lspconfig").setup()
+		end,
+	},
+
+	{
+		"neovim/nvim-lspconfig",
+		ft = file_type,
+		config = function()
+			local lsp = require("lspconfig")
+			lsp.tailwindcss.setup({
+				filetypes = {
+					"astro",
+					"javascriptreact",
+					"typescriptreact",
+				},
+			})
+
+			lsp.bashls.setup({})
+			lsp.cssls.setup({})
+
+			lsp.lua_ls.setup({
+				settings = {
+					Lua = {
+						diagnostics = {
+							globals = { "vim" },
+						},
+					},
+				},
+			})
+			lsp.angularls.setup({})
+			lsp.csharp_ls.setup({})
+			lsp.tsserver.setup({})
+		end,
+	},
+
 	{ "hrsh7th/cmp-nvim-lsp", ft = file_type },
 	{ "hrsh7th/cmp-buffer", ft = file_type },
 	{ "hrsh7th/cmp-path", ft = file_type },
 	{ "hrsh7th/cmp-cmdline", ft = file_type },
 	{ "hrsh7th/nvim-cmp", ft = file_type },
-
-	{ "williamboman/mason-lspconfig.nvim", ft = file_type },
+	{ "hrsh7th/cmp-nvim-lsp-signature-help" },
+	{ "SergioRibera/cmp-dotenv" },
 
 	-- snippets
 	{ "saadparwaiz1/cmp_luasnip", ft = file_type },
 	{
 		"L3MON4D3/LuaSnip",
 		ft = file_type,
+		config = function()
+			require("luasnip.loaders.from_vscode").lazy_load()
+			require("luasnip.loaders.from_snipmate").lazy_load()
+			require("luasnip.loaders.from_vscode").lazy_load({ paths = "~/.config/nvim/snippets/" })
+		end,
 		dependencies = { "rafamadriz/friendly-snippets" },
 	},
 })
