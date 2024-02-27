@@ -25,7 +25,7 @@ use_key_space("n", "hh", lsp_buf.hover)
 use_key_space("n", "ll", vim.lsp.buf.definition)
 
 -- Uso de rest
-use_key_space("n", "ee", "<Plug>RestNvim")
+use_key_space("n", "e", "<Plug>RestNvim")
 
 -- Ver el dianostico
 use_normal_key("n", "C-l", vim.diagnostic.open_float)
