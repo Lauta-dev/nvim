@@ -95,6 +95,11 @@ require("lazy").setup({
 	{
 		"akinsho/toggleterm.nvim",
 		cmd = "ToggleTerm",
+		config = function()
+			local terminal = require("toggleterm")
+			local config = require("plugins.configs.toggle-term")
+			terminal.setup(config)
+		end,
 	},
 
 	{

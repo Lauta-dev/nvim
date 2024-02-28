@@ -1,4 +1,6 @@
-require("toggleterm").setup({
+local M = {}
+
+M = {
 	-- size can be a number or function which is passed the current terminal
 	start_in_insert = true,
 	insert_mappings = true, -- whether or not the open mapping applies in insert mode
@@ -15,4 +17,6 @@ require("toggleterm").setup({
 			return term.name
 		end,
 	},
-})
+}
+
+return M
