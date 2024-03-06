@@ -1,70 +1,82 @@
-local key_map = vim.keymap.set
-local lsp_buf = vim.lsp.buf
+local set = vim.keymap.set
+local buf = vim.lsp.buf
+local cmd = vim.cmd
+local telescope = require("telescope.builtin")
 
 -- @param estado Estado del que esta el editor.
 -- @param tecla Combinación de teclas que se pulsaran.
 -- @param accion La acción a realizar.
-local function use_normal_key(estado, tecla, accion)
-	key_map(estado, "<" .. tecla .. ">", accion, { silent = true, noremap = true })
+local function normal_key(estado, tecla, accion)
+	set(estado, "<" .. tecla .. ">", accion, { silent = true, noremap = true })
 end
 
 -- @param estado Estado del que esta el editor.
 -- @param tecla Combinación de teclas que se pulsaran.
 -- @param accion La acción a realizar.
-local function use_key_space(estado, tecla, accion)
-	key_map(estado, "<leader>" .. tecla, accion, { silent = true, noremap = true })
+local function space(estado, tecla, accion)
+	set(estado, "<leader>" .. tecla, accion, { silent = true, noremap = true })
 end
+
+space("n", "s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 -- Ver ayuda
-use_key_space("n", "lh", lsp_buf.signature_help)
+space("n", "lh", buf.signature_help)
 
 -- Simular un hover
-use_key_space("n", "hh", lsp_buf.hover)
+space("n", "hh", buf.hover)
 
 -- Ir a la definición de un método o funcion
-use_key_space("n", "ll", vim.lsp.buf.definition)
+space("n", "ll", buf.definition)
 
 -- Uso de rest
-use_key_space("n", "e", "<Plug>RestNvim")
+--use_key_space("n", "e", "")
 
 -- Ver el dianostico
-use_normal_key("n", "C-l", vim.diagnostic.open_float)
+normal_key("n", "C-l", vim.diagnostic.open_float)
 
-use_normal_key("n", "C-s", ":w!<CR>") -- Guardar los cambios
-use_key_space("n", "xx", ":q!<CR>") -- Cerrar el archivo sin guardar
+normal_key("n", "C-s", ":w!<CR>") -- Guardar los cambios
+space("n", "xx", ":q!<CR>") -- Cerrar el archivo sin guardar
 
 -- Explorador de archivos
-use_normal_key("n", "C-b", ":NvimTreeToggle <CR>") -- Abrir y cierra
-use_key_space("n", "v", ":NvimTreeFocus <CR>") -- Mueve el cursor al explorador de archivos
+normal_key("n", "C-b", cmd.NvimTreeToggle) -- Abrir y cierra
+--normal_key("n", "", ":NvimTreeResize +10 <CR>")
+--normal_key("n", "", ":NvimTreeResize -10 <CR>")
+
+--use_key_space("n", "v", ":NvimTreeFocus <CR>") -- Mueve el cursor al explorador de archivos
 
 -- buffers
-use_normal_key("n", "S-l", ":BufferLineCycleNext<CR>") -- Ir al siguiente buffer
-use_normal_key("n", "S-k", ":BufferLineCyclePrev<CR>") -- Ir al buffer anterior
-use_normal_key("n", "C-c", ":bd<CR>") -- Cerrar el buffer (Cerrar el fichero)
+normal_key("n", "S-l", cmd.BufferLineCycleNext) -- Ir al siguiente buffer
+normal_key("n", "S-k", cmd.BufferLineCyclePrev) -- Ir al buffer anterior
+normal_key("n", "C-c", cmd.bd) -- Cerrar el buffer (Cerrar el fichero)
 
 -- Mover la linea
-use_normal_key("n", "S-C-Up", ":m -2<CR>")
-use_normal_key("n", "S-C-Down", ":m +1<CR>")
+normal_key("n", "S-C-Up", function ()
+  cmd.m("-2")
+end)
+
+normal_key("n", "S-C-Down", function ()
+  cmd.m("+1")
+end)
 
 -- Crear nuevo archivo
-use_normal_key("n", "C-n", ":new<CR>")
+normal_key("n", "C-n", cmd.new)
 
--- Pasar el cursor de una ventana a otra
---use_normal_key("n", "C-A-Up", ":wincmd k<CR>")
---use_normal_key("n", "C-A-Down", ":wincmd j<CR>")
---use_normal_key("n", "C-A-Left", ":wincmd h<CR>")
---use_normal_key("n", "C-A-Right", ":wincmd l<CR>")
+-- Mover el cursor de una ventana a otra
+normal_key("n", "A-Down", ":wincmd j<CR>")
+normal_key("n", "A-Up", ":wincmd k<CR>")
+normal_key("n", "A-Left", ":wincmd h<CR>")
+normal_key("n", "A-Right", ":wincmd l<CR>")
 
 -- Copiar texto al portapapeles (en Linux se necesita xclip)
-use_normal_key("n", "y", '"+y')
-use_normal_key("n", "p", '"+p')
+normal_key("n", "y", '"+y')
+normal_key("n", "p", '"+p')
 
 -- terminal
-use_normal_key("n", "C-j", ":ToggleTerm<CR>")
-use_normal_key("t", "C-j", ":wincdmd ToggleTerm<CR>")
+--normal_key("n", "C-j", ":ToggleTerm<CR>")
+--normal_key("t", "C-j", ":wincdmd ToggleTerm<CR>")
 
 -- Renombrar variables
-use_normal_key("n", "C-p", vim.lsp.buf.rename)
+normal_key("n", "C-p", buf.rename)
 
 -- Formatear texto al guardar
 local augroup = vim.api.nvim_create_augroup
@@ -73,10 +85,31 @@ augroup("__formatter__", { clear = true })
 autocmd("BufWritePost", {
 	group = "__formatter__",
 	--command = ":lua vim.lsp.buf.format()",
-	command = ":FormatWrite",
+	command = ":FormatWrite<CR>",
 })
 
 -- Telescope
-use_key_space("n", "ff", ":Telescope find_files<CR>")
-use_key_space("n", "fb", ":Telescope buffers<CR>")
-use_key_space("n", "fr", ":Telescope lsp_references<CR>")
+local telescope_preview = {
+  find_files = false,
+  buffers = false,
+  lsp_references = false,
+  git_files = false
+}
+
+space("n", "ff", function ()
+  telescope.find_files({ previewer = telescope_preview.find_files })
+end)
+
+space("n", "fg", function ()
+  telescope.git_files({ previewer = telescope_preview.git_files })
+end)
+
+space("n", "fb", function ()
+  telescope.buffers({ previewer = telescope_preview.buffers })
+end)
+
+space("n", "fr", function ()
+  telescope.lsp_references({ previewer = telescope_preview.lsp_references })
+end)
+
+space("n", "ft", cmd.TodoTelescope)
