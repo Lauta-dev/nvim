@@ -1,18 +1,18 @@
 local file_type = require("plugins/file_type")
 
+-- TODO: Revisar porque no se formatea el texto cuando se guarda el archivo
+
 require("lazy").setup({
 	{
 		"rcarriga/nvim-notify",
-		config = function() end,
+		config = true,
 	},
 
 	-- Resalta los comentarios que tendra TODO:
 	{
 		"folke/todo-comments.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
-		config = function()
-			require("todo-comments").setup()
-		end,
+		config = true,
 		cmd = { "TodoTelescope" },
 	},
 
@@ -23,9 +23,7 @@ require("lazy").setup({
 	{
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
-		config = function()
-			require("nvim-autopairs").setup({})
-		end,
+		config = true,
 	},
 
 	-- Barra de estado
@@ -33,7 +31,7 @@ require("lazy").setup({
 		"nvim-lualine/lualine.nvim",
 		ft = file_type,
 		config = function()
-			local config = require("plugins/configs/lualine")
+			local config = require("plugins.configs.lualine_conf")
 			require("lualine").setup(config)
 		end,
 	},
@@ -41,7 +39,6 @@ require("lazy").setup({
 	-- Resaltador de sintaxis
 	{
 		"nvim-treesitter/nvim-treesitter",
-		ft = file_type,
 		config = function()
 			require("nvim-treesitter.configs").setup(require("plugins.configs.nvim-treesitter"))
 		end,
@@ -66,9 +63,7 @@ require("lazy").setup({
 	-- Administrador de archivos
 	{
 		"nvim-tree/nvim-tree.lua",
-		config = function()
-			require("nvim-tree").setup()
-		end,
+		config = true,
 	},
 
 	{
@@ -85,18 +80,6 @@ require("lazy").setup({
 			"Telescope find_files",
 			"Telescope buffers",
 			"Telescope colorscheme",
-		},
-
-		opts = {
-      defaults = {
-            layout_config = {
-      vertical = { width = 0.5 },
-    },
-      },
-			pickers = {
-				find_files = {
-				},
-			},
 		},
 	},
 
@@ -116,6 +99,7 @@ require("lazy").setup({
 		"rest-nvim/rest.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		ft = "http",
+		config = true,
 	},
 
 	-- Ayuda para git
@@ -137,9 +121,7 @@ require("lazy").setup({
 			"MasonLog",
 		},
 
-		config = function()
-			require("mason").setup()
-		end,
+		config = true,
 	},
 
 	-- Linter
@@ -167,11 +149,9 @@ require("lazy").setup({
 	{
 		"akinsho/bufferline.nvim",
 		version = "*",
-		ft = file_type,
-		config = function()
-			require("bufferline").setup({})
-		end,
 		dependencies = "nvim-tree/nvim-web-devicons",
+		event = "BufEnter",
+		config = true,
 	},
 
 	-- Dep de otros plugins
@@ -192,9 +172,7 @@ require("lazy").setup({
 	{
 		"williamboman/mason-lspconfig.nvim",
 		ft = file_type,
-		config = function()
-			require("mason-lspconfig").setup()
-		end,
+		config = true,
 	},
 
 	{
@@ -203,7 +181,15 @@ require("lazy").setup({
 
 		config = function()
 			local lsp = require("lspconfig")
-			lsp.tailwindcss.setup({
+			--Enable (broadcasting) snippet capability for completion
+			local capabilities = vim.lsp.protocol.make_client_capabilities()
+			capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+			-- WEB
+			lsp.html.setup({ capabilities = capabilities }) -- HTML
+			lsp.cssls.setup({ capabilities = capabilities }) -- CSS
+			lsp.angularls.setup({}) -- Angular
+			lsp.tailwindcss.setup({ -- TailwindCSS
 				filetypes = {
 					"astro",
 					"javascriptreact",
@@ -211,9 +197,16 @@ require("lazy").setup({
 				},
 			})
 
-			lsp.bashls.setup({})
-			lsp.cssls.setup({})
+			lsp.tsserver.setup({}) -- JS/TS/JSX/TSX
 
+			-- Docker
+			lsp.docker_compose_language_service.setup({})
+			lsp.dockerls.setup({})
+
+			-- BASH (Linux)
+			lsp.bashls.setup({})
+
+			-- Lua (Linux)
 			lsp.lua_ls.setup({
 				settings = {
 					Lua = {
@@ -223,9 +216,9 @@ require("lazy").setup({
 					},
 				},
 			})
-			lsp.angularls.setup({})
+
+			-- C# (CSHARP)
 			lsp.csharp_ls.setup({})
-			lsp.tsserver.setup({})
 		end,
 	},
 

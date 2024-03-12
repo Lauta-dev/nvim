@@ -4,7 +4,7 @@ local g = vim.g
 --local api = vim.api
 local _borden = "single"
 
-vim.notify = require("notify")
+
 bg("tokyonight-night")
 ---api.nvim_set_hl(0, "Normal", { bg = "none" })
 ---api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
@@ -28,7 +28,7 @@ opt.mouse = "a" -- Habilitar mouse
 opt.ignorecase = true --
 opt.smartcase = true --
 opt.hlsearch = false --
-opt.wrap = false -- El texto dara un salto de linea cuando no quede mas espacio
+opt.wrap = true -- El texto dara un salto de linea cuando no quede mas espacio
 opt.breakindent = true --
 opt.fileencoding = "utf-8" -- Codificacion utf-8
 opt.cursorline = true -- El cursor estara resaltado
@@ -49,3 +49,6 @@ vim.diagnostic.config({
 		header = false,
 	},
 })
+
+vim.notify = require("notify")
+

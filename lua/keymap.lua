@@ -7,14 +7,14 @@ local telescope = require("telescope.builtin")
 -- @param tecla Combinación de teclas que se pulsaran.
 -- @param accion La acción a realizar.
 local function normal_key(estado, tecla, accion)
-	set(estado, "<" .. tecla .. ">", accion, { silent = true, noremap = true })
+  set(estado, "<" .. tecla .. ">", accion, { silent = true, noremap = true })
 end
 
 -- @param estado Estado del que esta el editor.
 -- @param tecla Combinación de teclas que se pulsaran.
 -- @param accion La acción a realizar.
 local function space(estado, tecla, accion)
-	set(estado, "<leader>" .. tecla, accion, { silent = true, noremap = true })
+  set(estado, "<leader>" .. tecla, accion, { silent = true, noremap = true })
 end
 
 space("n", "s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
@@ -29,13 +29,13 @@ space("n", "hh", buf.hover)
 space("n", "ll", buf.definition)
 
 -- Uso de rest
---use_key_space("n", "e", "")
+space("n", "e", "<Plug>RestNvim")
 
 -- Ver el dianostico
 normal_key("n", "C-l", vim.diagnostic.open_float)
 
 normal_key("n", "C-s", ":w!<CR>") -- Guardar los cambios
-space("n", "xx", ":q!<CR>") -- Cerrar el archivo sin guardar
+space("n", "xx", ":q!<CR>")       -- Cerrar el archivo sin guardar
 
 -- Explorador de archivos
 normal_key("n", "C-b", cmd.NvimTreeToggle) -- Abrir y cierra
@@ -47,14 +47,14 @@ normal_key("n", "C-b", cmd.NvimTreeToggle) -- Abrir y cierra
 -- buffers
 normal_key("n", "S-l", cmd.BufferLineCycleNext) -- Ir al siguiente buffer
 normal_key("n", "S-k", cmd.BufferLineCyclePrev) -- Ir al buffer anterior
-normal_key("n", "C-c", cmd.bd) -- Cerrar el buffer (Cerrar el fichero)
+normal_key("n", "C-c", cmd.bd)                  -- Cerrar el buffer (Cerrar el fichero)
 
 -- Mover la linea
-normal_key("n", "S-C-Up", function ()
+normal_key("n", "S-C-Up", function()
   cmd.m("-2")
 end)
 
-normal_key("n", "S-C-Down", function ()
+normal_key("n", "S-C-Down", function()
   cmd.m("+1")
 end)
 
@@ -83,9 +83,9 @@ local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 augroup("__formatter__", { clear = true })
 autocmd("BufWritePost", {
-	group = "__formatter__",
-	--command = ":lua vim.lsp.buf.format()",
-	command = ":FormatWrite<CR>",
+  group = "__formatter__",
+  --command = ":lua vim.lsp.buf.format()",
+  command = ":FormatWrite<CR>",
 })
 
 -- Telescope
@@ -96,19 +96,19 @@ local telescope_preview = {
   git_files = false
 }
 
-space("n", "ff", function ()
+space("n", "ff", function()
   telescope.find_files({ previewer = telescope_preview.find_files })
 end)
 
-space("n", "fg", function ()
+space("n", "fg", function()
   telescope.git_files({ previewer = telescope_preview.git_files })
 end)
 
-space("n", "fb", function ()
+space("n", "fb", function()
   telescope.buffers({ previewer = telescope_preview.buffers })
 end)
 
-space("n", "fr", function ()
+space("n", "fr", function()
   telescope.lsp_references({ previewer = telescope_preview.lsp_references })
 end)
 
