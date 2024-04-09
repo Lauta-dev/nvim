@@ -4,7 +4,6 @@ local g = vim.g
 --local api = vim.api
 local _borden = "single"
 
-
 bg("tokyonight-night")
 ---api.nvim_set_hl(0, "Normal", { bg = "none" })
 ---api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
@@ -49,6 +48,4 @@ vim.diagnostic.config({
 		header = false,
 	},
 })
-
-vim.notify = require("notify")
 

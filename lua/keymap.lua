@@ -3,16 +3,16 @@ local buf = vim.lsp.buf
 local cmd = vim.cmd
 local telescope = require("telescope.builtin")
 
--- @param estado Estado del que esta el editor.
--- @param tecla Combinación de teclas que se pulsaran.
--- @param accion La acción a realizar.
+-- @param `estado` Estado del que esta el editor.
+-- @param `tecla` Combinación de teclas que se pulsaran.
+-- @param `accion` La acción a realizar.
 local function normal_key(estado, tecla, accion)
   set(estado, "<" .. tecla .. ">", accion, { silent = true, noremap = true })
 end
 
--- @param estado Estado del que esta el editor.
--- @param tecla Combinación de teclas que se pulsaran.
--- @param accion La acción a realizar.
+-- @param `estado` Estado del que esta el editor.
+-- @param `tecla` Combinación de teclas que se pulsaran.
+-- @param `accion` La acción a realizar.
 local function space(estado, tecla, accion)
   set(estado, "<leader>" .. tecla, accion, { silent = true, noremap = true })
 end
@@ -39,10 +39,6 @@ space("n", "xx", ":q!<CR>")       -- Cerrar el archivo sin guardar
 
 -- Explorador de archivos
 normal_key("n", "C-b", cmd.NvimTreeToggle) -- Abrir y cierra
---normal_key("n", "", ":NvimTreeResize +10 <CR>")
---normal_key("n", "", ":NvimTreeResize -10 <CR>")
-
---use_key_space("n", "v", ":NvimTreeFocus <CR>") -- Mueve el cursor al explorador de archivos
 
 -- buffers
 normal_key("n", "S-l", cmd.BufferLineCycleNext) -- Ir al siguiente buffer
@@ -50,13 +46,8 @@ normal_key("n", "S-k", cmd.BufferLineCyclePrev) -- Ir al buffer anterior
 normal_key("n", "C-c", cmd.bd)                  -- Cerrar el buffer (Cerrar el fichero)
 
 -- Mover la linea
-normal_key("n", "S-C-Up", function()
-  cmd.m("-2")
-end)
-
-normal_key("n", "S-C-Down", function()
-  cmd.m("+1")
-end)
+normal_key("n", "S-C-Up", function() cmd.m("-2") end)
+normal_key("n", "S-C-Down", function() cmd.m("+1") end)
 
 -- Crear nuevo archivo
 normal_key("n", "C-n", cmd.new)
@@ -67,33 +58,38 @@ normal_key("n", "A-Up", ":wincmd k<CR>")
 normal_key("n", "A-Left", ":wincmd h<CR>")
 normal_key("n", "A-Right", ":wincmd l<CR>")
 
+normal_key("t", "A-Down", "<cmd>wincmd j<CR>]]")
+normal_key("t", "A-Up", "<cmd>wincmd k<CR>]]")
+normal_key("t", "A-Left", "<cmd>wincmd h<CR>]]")
+normal_key("t", "A-Right", "<cmd>wincmd l<CR>]]")
+
 -- Copiar texto al portapapeles (en Linux se necesita xclip)
 normal_key("n", "y", '"+y')
 normal_key("n", "p", '"+p')
 
 -- terminal
---normal_key("n", "C-j", ":ToggleTerm<CR>")
---normal_key("t", "C-j", ":wincdmd ToggleTerm<CR>")
+normal_key("n", "C-j", cmd.ToggleTerm)
+normal_key('t', 'C-j', [[<Cmd>ToggleTerm<CR>]])
 
 -- Renombrar variables
 normal_key("n", "C-p", buf.rename)
 
 -- Formatear texto al guardar
-local augroup = vim.api.nvim_create_augroup
+--[[local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 augroup("__formatter__", { clear = true })
 autocmd("BufWritePost", {
   group = "__formatter__",
-  --command = ":lua vim.lsp.buf.format()",
+  -- command = ":lua vim.lsp.buf.format()",
   command = ":FormatWrite<CR>",
-})
+})--]]
 
 -- Telescope
 local telescope_preview = {
-  find_files = false,
-  buffers = false,
-  lsp_references = false,
-  git_files = false
+  find_files = true,
+  buffers = true,
+  lsp_references = true,
+  git_files = true
 }
 
 space("n", "ff", function()
