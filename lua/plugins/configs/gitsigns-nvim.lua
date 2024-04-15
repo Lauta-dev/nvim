@@ -1,4 +1,4 @@
-local M = {
+return {
 	signs = {
 		add = { text = "│" },
 		change = { text = "│" },
@@ -41,5 +41,3 @@ local M = {
 		enable = false,
 	},
 }
-
-return M
