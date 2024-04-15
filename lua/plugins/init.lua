@@ -242,6 +242,8 @@ require("lazy").setup({
 
       -- C# (CSHARP)
       lsp.csharp_ls.setup({})
+
+      lsp.pyright.setup({})
     end,
   },
 
