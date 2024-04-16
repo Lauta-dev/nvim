@@ -1,7 +1,5 @@
 local file_type = require("plugins/file_type")
 
--- TODO: Revisar porque no se formatea el texto cuando se guarda el archivo
-
 require("lazy").setup({
   -- Resalta los comentarios que tendra TODO:
   {
