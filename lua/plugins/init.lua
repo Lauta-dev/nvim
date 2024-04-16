@@ -51,22 +51,6 @@ require("lazy").setup({
     end,
   },
 
-  -- Agreag popop para ver diferentes partes del código
-  {
-    "SmiteshP/nvim-navbuddy",
-    cmd = "Navbody",
-
-    dependencies = {
-      "SmiteshP/nvim-navic",
-      "MunifTanjim/nui.nvim",
-    },
-
-    config = function()
-      local config = require("plugins.configs.navbody")
-      require("nvim-navbuddy").setup(config)
-    end,
-  },
-
   -- Administrador de archivos
   {
     "nvim-tree/nvim-tree.lua",
@@ -101,21 +85,6 @@ require("lazy").setup({
     end,
   },
 
-  -- Ayuda para hacer peticiones desde archivos .http
-  --[[{
-    "rest-nvim/rest.nvim",
-    dependencies = { "luarocks.nvim" },
-    config = function()
-      require("rest-nvim").setup()
-    end,
-  },
-
-{
-  "vhyrro/luarocks.nvim",
-  priority = 1000,
-  config = true,
-},--]]
-
   -- Ayuda para git
   {
     "lewis6991/gitsigns.nvim",
@@ -136,14 +105,6 @@ require("lazy").setup({
     },
 
     config = true,
-  },
-
-  -- comentarios
-  {
-    "numToStr/Comment.nvim",
-    config = function()
-      require("Comment").setup()
-    end,
   },
 
   -- Linter
@@ -210,7 +171,7 @@ require("lazy").setup({
       -- WEB
       lsp.html.setup({ capabilities = capabilities })  -- HTML
       lsp.cssls.setup({ capabilities = capabilities }) -- CSS
-      lsp.angularls.setup({})                          -- Angular
+      lsp.angularls.setup({ capabilities = capabilities })                          -- Angular
 
       lsp.tailwindcss.setup({                          -- TailwindCSS
         filetypes = {
@@ -218,16 +179,17 @@ require("lazy").setup({
           "javascriptreact",
           "typescriptreact",
         },
+        capabilities = capabilities
       })
 
-      lsp.tsserver.setup({}) -- JS/TS/JSX/TSX
+      lsp.tsserver.setup({ capabilities = capabilities }) -- JS/TS/JSX/TSX
 
       -- Docker
-      lsp.docker_compose_language_service.setup({})
-      lsp.dockerls.setup({})
+      lsp.docker_compose_language_service.setup({ capabilities = capabilities })
+      lsp.dockerls.setup({ capabilities = capabilities })
 
       -- BASH (Linux)
-      lsp.bashls.setup({})
+      lsp.bashls.setup({ capabilities = capabilities })
 
       -- Lua (Linux)
       lsp.lua_ls.setup({
@@ -238,12 +200,14 @@ require("lazy").setup({
             },
           },
         },
+        capabilities = capabilities
       })
 
       -- C# (CSHARP)
-      lsp.csharp_ls.setup({})
+      lsp.csharp_ls.setup({ capabilities = capabilities })
 
-      lsp.pyright.setup({})
+      -- Python
+      lsp.pyright.setup({ capabilities = capabilities })
     end,
   },
 

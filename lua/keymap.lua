@@ -74,16 +74,6 @@ normal_key('t', 'C-j', [[<Cmd>ToggleTerm<CR>]])
 -- Renombrar variables
 normal_key("n", "C-p", buf.rename)
 
--- Formatear texto al guardar
---[[local augroup = vim.api.nvim_create_augroup
-local autocmd = vim.api.nvim_create_autocmd
-augroup("__formatter__", { clear = true })
-autocmd("BufWritePost", {
-  group = "__formatter__",
-  -- command = ":lua vim.lsp.buf.format()",
-  command = ":FormatWrite<CR>",
-})--]]
-
 -- Telescope
 local telescope_preview = {
   find_files = true,
