@@ -1,6 +1,6 @@
 <h1 align="center">Configuración de nvim</h1>
 
-![nvim](./public/nvim.png)
+![nvim](./public/screenshot.png)
 
 Depencencias:
 - git
