@@ -10,6 +10,6 @@ Depencencias:
 
 1. Clonar el repositorio y inicia nvim.
 ```sh
-git clone https://github.com/Lauta-dev/nvim-configuracion.git ~/.config/nvim; nvim
+git clone https://github.com/Lauta-dev/nvim.git ~/.config/nvim; nvim
 ```
 
