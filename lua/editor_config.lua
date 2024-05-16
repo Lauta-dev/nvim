@@ -36,7 +36,7 @@ opt.termguicolors = true --
 opt.conceallevel = 2
 
 vim.diagnostic.config({
-	update_in_insert = true,
+	update_in_insert = false,
 	signs = true,
 	underline = false,
 	virtual_text = true,
@@ -48,4 +48,3 @@ vim.diagnostic.config({
 		header = false,
 	},
 })
-
