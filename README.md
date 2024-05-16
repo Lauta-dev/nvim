@@ -8,8 +8,13 @@ Depencencias:
 
 ## Usar en local
 
-1. Clonar el repositorio y inicia nvim.
+1. Clonar el repositorio.
 ```sh
-git clone https://github.com/Lauta-dev/nvim.git ~/.config/nvim; nvim
+git clone https://github.com/Lauta-dev/nvim.git ~/.config/lauta_dev_nvim
 ```
 
+2. Iniciar Neovim con el directorio de configuración
+```bash
+NVIM_APPNAME=lauta_dev_nvim nvim
+```
+> Esto evitara que elimine su configuración existente
