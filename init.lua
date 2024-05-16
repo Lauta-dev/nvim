@@ -1,4 +1,10 @@
-require("plugins/lazy")
-require("plugins/init")
-require("editor_config")
-require("keymap")
+local plugins = {
+	"plugins/lazy",
+	"plugins/init",
+	"editor_config",
+	"keymap",
+}
+
+for _, plugin in ipairs(plugins) do
+	require(plugin)
+end
