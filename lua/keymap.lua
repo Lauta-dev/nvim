@@ -104,7 +104,7 @@ local normal_keys = {
 		desc = "Open file explorer",
 		state = NVIM_STATES.normal,
 		key = "C-b",
-		action = cmd.NvimTreeTogglet,
+		action = ":Neotree toggle<CR>",
 	},
 	{
 		desc = "Save file",
@@ -112,12 +112,7 @@ local normal_keys = {
 		key = "C-s",
 		action = ":w!<CR>",
 	},
-	{
-		desc = "Open file explorer",
-		state = NVIM_STATES.normal,
-		key = "C-b",
-		action = cmd.NvimTreeToggle,
-	},
+
 	{
 		desc = "Next buffer",
 		state = NVIM_STATES.normal,
@@ -210,35 +205,3 @@ normal_key("n", "A-Right", ":wincmd l<CR>")--]]
 --normal_key("t", "A-Up", "<cmd>wincmd k<CR>]]")
 --normal_key("t", "A-Left", "<cmd>wincmd h<CR>]]")
 --normal_key("t", "A-Right", "<cmd>wincmd l<CR>]]")
-
-vim.api.nvim_create_augroup("AutoFormat", {})
-
-local current_buffer = vim.api.nvim_eval("expand('%:p')")
-
-vim.api.nvim_create_autocmd("BufWritePost", {
-	pattern = "*.lua",
-	group = "AutoFormat",
-	callback = function()
-		vim.cmd("silent !~/.local/share/PersonalVim/mason/bin/stylua " .. current_buffer .. " %")
-	end,
-})
-
-vim.api.nvim_create_autocmd("BufWritePost", {
-	pattern = "*.cs",
-	group = "AutoFormat",
-	callback = function()
-		vim.cmd(
-			"silent !~/.local/share/PersonalVim/mason/bin/dotnet-csharpier "
-				.. current_buffer
-				.. " --fast --no-msbuild-check %"
-		)
-	end,
-})
-
-vim.api.nvim_create_autocmd("BufWritePost", {
-	pattern = { "*.js", "*.ts", "*.html", "*.json", "*.jsx", "*.tsx", "*.css", "*.yaml", "*.yml" },
-	group = "AutoFormat",
-	callback = function()
-		vim.cmd("silent !~/.local/share/PersonalVim/mason/bin/prettier " .. current_buffer .. " --write %")
-	end,
-})
