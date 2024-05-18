@@ -3,6 +3,7 @@ local plugins = {
 	"plugins/init",
 	"editor_config",
 	"keymap",
+	"autocmd",
 }
 
 for _, plugin in ipairs(plugins) do
