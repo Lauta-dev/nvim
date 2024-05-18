@@ -2,7 +2,6 @@ local opt = vim.opt
 local bg = vim.cmd.colorscheme
 local g = vim.g
 --local api = vim.api
-local _borden = "single"
 
 bg("tokyonight-night")
 ---api.nvim_set_hl(0, "Normal", { bg = "none" })
@@ -33,10 +32,10 @@ opt.fileencoding = "utf-8" -- Codificacion utf-8
 opt.cursorline = true -- El cursor estara resaltado
 opt.clipboard = "unnamedplus" -- Habilitar portapapeles
 opt.termguicolors = true --
-opt.conceallevel = 2
+opt.conceallevel = 0
 
 vim.diagnostic.config({
-	update_in_insert = false,
+	update_in_insert = true,
 	signs = true,
 	underline = false,
 	virtual_text = true,
@@ -44,7 +43,7 @@ vim.diagnostic.config({
 
 	float = {
 		focusable = true,
-		border = _borden,
+		border = "single",
 		header = false,
 	},
 })
