@@ -51,7 +51,6 @@ require("lazy").setup({
 	-- Resaltador de sintaxis
 	{
 		"nvim-treesitter/nvim-treesitter",
-		ft = file_type,
 		config = function()
 			local config = require("plugins.configs.nvim-treesitter")
 			require("nvim-treesitter.configs").setup(config)
@@ -59,20 +58,9 @@ require("lazy").setup({
 	},
 
 	-- Administrador de archivos
-	--[[{
+	{
 		"nvim-tree/nvim-tree.lua",
 		config = true,
-	},--]]
-
-	{
-		"nvim-neo-tree/neo-tree.nvim",
-		branch = "v3.x",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-			"MunifTanjim/nui.nvim",
-			-- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
-		},
 	},
 
 	{
@@ -82,13 +70,6 @@ require("lazy").setup({
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"tsakirist/telescope-lazy.nvim",
-		},
-
-		cmd = {
-			"Telescope",
-			"Telescope find_files",
-			"Telescope buffers",
-			"Telescope colorscheme",
 		},
 	},
 
@@ -131,19 +112,27 @@ require("lazy").setup({
 		ft = file_type,
 		config = function()
 			require("lint").linters_by_ft = {
-				typescript = { "biome" },
-				javascript = { "biome" },
+				cs = { "ast-grep" },
+				html = { "htmlhint" },
+				css = { "stylelint" },
+				javascript = { "oxlint" },
+				typescript = { "oxlint" },
+				javascriptreact = { "oxlint" },
+				typescriptreact = { "oxlint" },
 			}
-		end,
-		enable = false,
-	},
 
-	-- Formateador de texto
-	{
-		"mhartington/formatter.nvim",
-		ft = file_type,
-		config = function()
-			require("formatter").setup(require("plugins.configs.formatter-nvim"))
+			require("lint").linters.oxlint = {
+				name = "oxlint",
+				cmd = "/home/lauta/.local/share/PersonalVim/mason/bin/oxlint",
+				stdin = false,
+				args = { "--format", "unix" },
+				stream = "stdout",
+				ignore_exitcode = true,
+				parser = require("lint.parser").from_errorformat("%f:%l:%c: %m", {
+					source = "oxlint",
+					severity = vim.diagnostic.severity.WARN,
+				}),
+			}
 		end,
 	},
 
@@ -171,12 +160,13 @@ require("lazy").setup({
 		priority = 1000,
 		enable = false,
 	},
+
 	{
-		"AstroNvim/astrotheme",
+		"AlexvZyl/nordic.nvim",
+		lazy = false,
+		priority = 1000,
 		config = function()
-			require("astrotheme").setup({
-				palette = "astrodark", -- String of the default palette to use when calling `:colorscheme astrotheme`
-			})
+			require("nordic").load()
 		end,
 	},
 
@@ -196,8 +186,7 @@ require("lazy").setup({
 		config = function()
 			local lsp = require("lspconfig")
 			--Enable (broadcasting) snippet capability for completion
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities.textDocument.completion.completionItem.snippetSupport = true
+			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 			-- WEB
 			lsp.html.setup({ capabilities = capabilities }) -- HTML
@@ -213,7 +202,7 @@ require("lazy").setup({
 				capabilities = capabilities,
 			})
 
-			lsp.tsserver.setup({ capabilities = capabilities }) -- JS/TS/JSX/TSX
+			lsp.tsserver.setup({}) -- JS/TS/JSX/TSX
 
 			-- Docker
 			lsp.docker_compose_language_service.setup({ capabilities = capabilities })
@@ -252,67 +241,14 @@ require("lazy").setup({
 			"hrsh7th/cmp-path",
 			"hrsh7th/cmp-cmdline",
 			"hrsh7th/cmp-nvim-lsp-signature-help",
-			"SergioRibera/cmp-dotenv",
 			"saadparwaiz1/cmp_luasnip",
 		},
 
 		config = function()
 			local cmp = require("cmp")
 			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-			local kind_icons = require("icon.kind_icon")
-			cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-
-			cmp.setup({
-				snippet = {
-					expand = function(args)
-						require("luasnip").lsp_expand(args.body)
-					end,
-				},
-				view = {
-					--entries = { name: "custom",  }, -- can be "custom", "wildmenu" or "native"
-					entries = { name = "custom", selection_order = "near_cursor" },
-				},
-				window = {
-					completion = cmp.config.window.bordered(),
-					documentation = cmp.config.window.bordered(),
-				},
-				sources = {
-					{ name = "path" },
-					{ name = "nvim_lsp" },
-					{ name = "luasnip" },
-					{ name = "nvim_lsp_signature_help" },
-					--{ name = "dotenv" },
-				},
-				mapping = cmp.mapping.preset.insert({
-					["<C-b>"] = cmp.mapping.scroll_docs(-4),
-					["<C-f>"] = cmp.mapping.scroll_docs(4),
-					["<C-Space>"] = cmp.mapping.complete(),
-					["<C-e>"] = cmp.mapping.abort(),
-					["<Tab>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-				}),
-				formatting = {
-					format = function(entry, vim_item)
-						vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
-						vim_item.menu = ({
-							buffer = "",
-							nvim_lsp = "",
-							luasnip = "",
-							nvim_lua = "",
-							latex_symbols = "",
-						})[entry.source.name]
-						return vim_item
-					end,
-				},
-			})
-
-			cmp.setup.cmdline(":", {
-				mapping = cmp.mapping.preset.cmdline(),
-				sources = cmp.config.sources({
-					{ name = "path" },
-				}, {
-					{ name = "cmdline" },
-				}),
-			})
+			local cmp_config = require("plugins.configs.cmp_config")
+			cmp_config(cmp, cmp_autopairs)
 		end,
 	},
 

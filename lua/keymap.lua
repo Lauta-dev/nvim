@@ -50,7 +50,7 @@ local space_keys = {
 	{
 		state = NVIM_STATES.normal,
 		key = "e",
-		action = cmd.NvimTreeFocus,
+		action = ":NvimTreeFocus<CR>",
 	},
 	{
 		state = NVIM_STATES.normal,
@@ -104,7 +104,7 @@ local normal_keys = {
 		desc = "Open file explorer",
 		state = NVIM_STATES.normal,
 		key = "C-b",
-		action = ":Neotree toggle<CR>",
+		action = ":NvimTreeToggle<CR>",
 	},
 	{
 		desc = "Save file",
