@@ -55,30 +55,22 @@ local space_keys = {
 	{
 		state = NVIM_STATES.normal,
 		key = "ff",
-		action = function()
-			telescope.find_files({ previewer = telescope_preview.find_files })
-		end,
+		action = ":Telescope find_files<CR>",
 	},
 	{
 		state = NVIM_STATES.normal,
 		key = "fg",
-		action = function()
-			telescope.git_files({ previewer = telescope_preview.git_files })
-		end,
+		action = ":Telescope git_files<CR>",
 	},
 	{
 		state = NVIM_STATES.normal,
 		key = "fb",
-		action = function()
-			telescope.buffers({ previewer = telescope_preview.buffers })
-		end,
+		action = ":Telescope buffers<CR>",
 	},
 	{
 		state = NVIM_STATES.normal,
 		key = "fr",
-		action = function()
-			telescope.lsp_references({ previewer = telescope_preview.lsp_references })
-		end,
+		action = ":Telescope lsp_references<CR>",
 	},
 	{
 		state = NVIM_STATES.normal,
