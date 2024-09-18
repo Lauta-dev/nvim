@@ -1,8 +1,8 @@
 local plugins = {
 	"plugins/lazy",
 	"plugins/init",
-	"editor_config",
 	"keymap",
+	"editor_config",
 	"autocmd",
 }
 
