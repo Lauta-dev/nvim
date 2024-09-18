@@ -3,7 +3,7 @@ local bg = vim.cmd.colorscheme
 local g = vim.g
 --local api = vim.api
 
-bg("tokyonight-moon")
+bg("catppuccin-mocha")
 ---api.nvim_set_hl(0, "Normal", { bg = "none" })
 ---api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
