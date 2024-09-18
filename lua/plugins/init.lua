@@ -2,6 +2,7 @@ local n = {
 	"plugins/autocomplete",
 	"plugins/lsp",
 	"plugins/themes",
+	"plugins/ia",
 }
 
 local plugins = {
