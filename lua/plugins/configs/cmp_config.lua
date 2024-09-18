@@ -3,8 +3,8 @@ local function cmp_init(cmp, cmp_autopairs)
 
 	cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 	local capabilities = require("cmp_nvim_lsp").default_capabilities()
-	
-  require("lspconfig")["ts_ls"].setup({
+
+	require("lspconfig")["ts_ls"].setup({
 		capabilities = capabilities,
 	})
 
@@ -27,6 +27,7 @@ local function cmp_init(cmp, cmp_autopairs)
 			{ name = "nvim_lsp" },
 			{ name = "luasnip" },
 			{ name = "nvim_lsp_signature_help" },
+			{ name = "supermaven" },
 		},
 		mapping = cmp.mapping.preset.insert({
 			["<C-b>"] = cmp.mapping.scroll_docs(-4),
