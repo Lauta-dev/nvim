@@ -12,6 +12,7 @@ local plugins = {
 		config = true,
 		cmd = { "TodoTelescope" },
 	},
+  { 'mistweaverco/kulala.nvim', opts = {} },
 
 	{
 		"mhartington/formatter.nvim",

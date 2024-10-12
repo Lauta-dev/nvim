@@ -1,11 +1,13 @@
 local opt = vim.opt
 local bg = vim.cmd.colorscheme
 local g = vim.g
---local api = vim.api
+local api = vim.api
 
 bg("catppuccin-mocha")
----api.nvim_set_hl(0, "Normal", { bg = "none" })
----api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+
+--api.nvim_set_hl(0, "Normal", { bg = "none" })
+--api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+--api.nvim_set_hl(0, "NvimTree", { bg = "none" })
 
 g.loaded_netrw = 1
 g.loaded_netrwPlugin = 1

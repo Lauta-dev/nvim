@@ -60,6 +60,9 @@ return {
 
 			-- C#
 			lsp.omnisharp.setup(require("plugins.configs.lsp.csharp_omnisharp"))
+
+      -- PHP
+      lsp.intelephense.setup{}
 		end,
 	},
 }

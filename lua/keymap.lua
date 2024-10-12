@@ -104,19 +104,6 @@ local normal_keys = {
 		key = "C-s",
 		action = ":w!<CR>",
 	},
-
-	{
-		desc = "Next buffer",
-		state = NVIM_STATES.normal,
-		key = "S-l",
-		action = cmd.BufferLineCycleNext,
-	},
-	{
-		desc = "Prev buffer",
-		state = NVIM_STATES.normal,
-		key = "S-k",
-		action = cmd.BufferLineCyclePrev,
-	},
 	{
 		desc = "Close buffer",
 		state = NVIM_STATES.normal,
@@ -156,19 +143,6 @@ local normal_keys = {
 		state = NVIM_STATES.normal,
 		key = "p",
 		action = '"+p',
-	},
-
-	{
-		desc = "Open terminal",
-		state = NVIM_STATES.normal,
-		key = "C-j",
-		action = cmd.ToggleTerm,
-	},
-	{
-		desc = "Close terminal",
-		state = NVIM_STATES.terminal,
-		key = "C-j",
-		action = [[<Cmd>ToggleTerm<CR>]],
 	},
 
 	{
