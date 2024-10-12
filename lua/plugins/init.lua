@@ -15,19 +15,21 @@ local plugins = {
   { 'mistweaverco/kulala.nvim', opts = {} },
 
 	{
-		"mhartington/formatter.nvim",
+		"stevearc/conform.nvim",
 		config = function()
-			require("formatter").setup({
-				logging = false,
-				filetype = {
-					lua = { require("formatter.filetypes.lua").stylua },
-					javascript = { require("formatter.filetypes.javascript").biome },
-					typescript = { require("formatter.filetypes.typescript").biome },
-					javascriptreact = { require("formatter.filetypes.javascriptreact").biome },
-					typescriptreact = { require("formatter.filetypes.typescriptreact").biome },
-					json = { require("formatter.filetypes.typescriptreact").biome },
-					["*"] = { require("formatter.filetypes.any").remove_trailing_whitespace },
+			require("conform").setup({
+				formatters_by_ft = {
+					lua = { "stylua" },
+					javascript = { "biome" },
+					typescript = { "biome" },
+					javascriptreact = { "biome" },
+					typescriptreact = { "biome" },
+					json = { "biome" },
 				},
+          format_on_save = {
+    timeout_ms = 500,
+    lsp_format = "fallback",
+  },
 			})
 		end,
 	},
