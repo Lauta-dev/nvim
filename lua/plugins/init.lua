@@ -1,149 +1,168 @@
 local n = {
-  "plugins/autocomplete",
-  "plugins/lsp",
-  "plugins/themes",
-  "plugins/ia",
-  "plugins/SchemaStore",
-  "plugins/garbage_day"
+	"plugins/autocomplete",
+	"plugins/lsp",
+	"plugins/themes",
+	"plugins/ia",
+	"plugins/SchemaStore",
+	"plugins/garbage_day",
 }
 
 local plugins = {
-  {
-    "folke/todo-comments.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = true,
-    cmd = { "TodoTelescope" },
-  },
-  {
-    'mistweaverco/kulala.nvim',
-    opts = {},
-    ft = { "http" }
-  },
+	{
+		"folke/todo-comments.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		config = true,
+		cmd = { "TodoTelescope" },
+	},
 
-  {
-    "stevearc/conform.nvim",
-    config = function()
-      require("conform").setup({
-        formatters_by_ft = {
-          lua = { "stylua" },
-          javascript = { "biome" },
-          typescript = { "biome" },
-          javascriptreact = { "biome" },
-          typescriptreact = { "biome" },
-          json = { "biome" },
-        },
-        format_on_save = {
-          timeout_ms = 500,
-          lsp_format = "fallback",
-        },
-      })
-    end,
-    ft = { "lua", "javascript", "javascriptreact", "typescriptreact", "typescript", "json" }
-  },
+	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		opts = {
+			-- your configuration comes here
+			-- or leave it empty to use the default settings
+			-- refer to the configuration section below
+		},
+		keys = {
+			{
+				"<leader>?",
+				function()
+					require("which-key").show({ global = false })
+				end,
+				desc = "Buffer Local Keymaps (which-key)",
+			},
+		},
+	},
 
-  {
-    "j-hui/fidget.nvim",
-    tag = "v1.0.0",
-    opts = {},
-  },
+	{
+		"mistweaverco/kulala.nvim",
+		opts = {},
+		ft = { "http" },
+	},
 
-  { "nvim-tree/nvim-web-devicons" },
-  {
-    "windwp/nvim-autopairs",
-    event = "InsertEnter",
-    config = true,
-  },
-  {
-    "nvim-lualine/lualine.nvim",
-    config = function()
-      local config = require("plugins.configs.lualine_conf")
-      require("lualine").setup(config)
-    end,
-  },
+	{
+		"stevearc/conform.nvim",
+		config = function()
+			require("conform").setup({
+				formatters_by_ft = {
+					lua = { "stylua" },
+					javascript = { "biome" },
+					typescript = { "biome" },
+					javascriptreact = { "biome" },
+					typescriptreact = { "biome" },
+					json = { "biome" },
+				},
+				format_on_save = {
+					timeout_ms = 500,
+					lsp_format = "fallback",
+				},
+			})
+		end,
+		ft = { "lua", "javascript", "javascriptreact", "typescriptreact", "typescript", "json" },
+	},
 
-  {
-    "nvim-treesitter/nvim-treesitter",
-    config = function()
-      local config = require("plugins.configs.nvim-treesitter")
-      require("nvim-treesitter.configs").setup(config)
-    end,
-  },
+	{
+		"j-hui/fidget.nvim",
+		opts = {},
+	},
 
-  {
-    "nvim-tree/nvim-tree.lua",
-    config = true,
-  },
+	{ "nvim-tree/nvim-web-devicons" },
+	{
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		config = true,
+	},
+	{
+		"nvim-lualine/lualine.nvim",
+		config = function()
+			local config = require("plugins.configs.lualine_conf")
+			require("lualine").setup(config)
+		end,
+	},
 
-  {
-    "nvim-telescope/telescope.nvim",
-    tag = "0.1.5",
+	{
+		"nvim-treesitter/nvim-treesitter",
+		config = function()
+			local config = require("plugins.configs.nvim-treesitter")
+			require("nvim-treesitter.configs").setup(config)
+		end,
+	},
 
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "tsakirist/telescope-lazy.nvim",
-    },
-  },
+	{
+		"nvim-tree/nvim-tree.lua",
+		config = true,
+	},
 
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    config = function()
-      local hooks = require("ibl.hooks")
-      local config = require("plugins.configs.indent-blankline")
-      config.load_rainbow(hooks)
-      require("ibl").setup({ scope = { highlight = config.highlight } })
-    end,
-  },
+	{
+		"nvim-telescope/telescope.nvim",
+		tag = "0.1.5",
 
-  {
-    "lewis6991/gitsigns.nvim",
-    config = function()
-      require("gitsigns").setup(require("plugins.configs.gitsigns-nvim"))
-    end,
-  },
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"tsakirist/telescope-lazy.nvim",
+		},
+	},
 
-  {
-    "williamboman/mason.nvim",
-    cmd = {
-      "Mason",
-      "MasonInstall",
-      "MasonUninstall",
-      "MasonUninstallAll",
-      "MasonLog",
-    },
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		config = function()
+			local hooks = require("ibl.hooks")
+			local config = require("plugins.configs.indent-blankline")
+			config.load_rainbow(hooks)
+			require("ibl").setup({ scope = { highlight = config.highlight } })
+		end,
+	},
 
-    config = true,
-  },
+	{
+		"lewis6991/gitsigns.nvim",
+		config = function()
+			require("gitsigns").setup(require("plugins.configs.gitsigns-nvim"))
+		end,
+	},
 
-  {
-    "mfussenegger/nvim-lint",
-    config = function()
-      require("lint").linters_by_ft = {
-        cs = { "ast-grep" },
-        html = { "htmlhint" },
-        css = { "stylelint" },
-        javascript = { "biome" },
-        typescript = { "biome" },
-        javascriptreact = { "biome" },
-        typescriptreact = { "biome" },
-        json = { "biome" }
-      }
-    end,
-    ft = { "cs", "html", "css", "javascriptreact", "javascript", "typescriptreact", "typescript" }
-  },
+	{
+		"williamboman/mason.nvim",
+		cmd = {
+			"Mason",
+			"MasonInstall",
+			"MasonUninstall",
+			"MasonUninstallAll",
+			"MasonLog",
+		},
 
-  {
-    "nvim-lua/plenary.nvim",
-    cmd = { "PlenaryBustedFile", "PlenaryBustedDirectory" },
-    config = function()
-      require("plenary.async")
-    end,
-  },
+		config = true,
+	},
+
+	{
+		"mfussenegger/nvim-lint",
+		config = function()
+			require("lint").linters_by_ft = {
+				cs = { "ast-grep" },
+				html = { "htmlhint" },
+				css = { "stylelint" },
+				javascript = { "biome" },
+				typescript = { "biome" },
+				javascriptreact = { "biome" },
+				typescriptreact = { "biome" },
+				json = { "biome" },
+			}
+		end,
+		ft = { "cs", "html", "css", "javascriptreact", "javascript", "typescriptreact", "typescript" },
+	},
+
+	{
+		"nvim-lua/plenary.nvim",
+		cmd = { "PlenaryBustedFile", "PlenaryBustedDirectory" },
+		config = function()
+			require("plenary.async")
+		end,
+	},
 }
 
 for _, v in ipairs(n) do
-  for _, d in ipairs(require(v)) do
-    table.insert(plugins, d)
-  end
+	for _, d in ipairs(require(v)) do
+		table.insert(plugins, d)
+	end
 end
 
 require("lazy").setup(plugins)

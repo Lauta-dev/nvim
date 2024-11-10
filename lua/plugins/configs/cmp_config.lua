@@ -1,12 +1,6 @@
 local function cmp_init(cmp, cmp_autopairs)
 	local kind_icons = require("icon.kind_icon")
-
 	cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-	local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-	require("lspconfig")["ts_ls"].setup({
-		capabilities = capabilities,
-	})
 
 	cmp.setup({
 		snippet = {
@@ -24,10 +18,9 @@ local function cmp_init(cmp, cmp_autopairs)
 		},
 		sources = {
 			{ name = "path" },
+			{ name = "supermaven" },
 			{ name = "nvim_lsp" },
 			{ name = "luasnip" },
-			{ name = "nvim_lsp_signature_help" },
-			{ name = "supermaven" },
 		},
 		mapping = cmp.mapping.preset.insert({
 			["<C-b>"] = cmp.mapping.scroll_docs(-4),

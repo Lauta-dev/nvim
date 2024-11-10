@@ -3,21 +3,22 @@
 	"contributes": {
 		"snippets": [
 			{
-				"language": [
-          "javascriptreact",
-          "typescriotreact"
-				],
+				"language": ["javascriptreact", "typescriotreact"],
 				"path": "./react.json"
 			},
-      {
-        "language": [
-          "javascriptreact",
-          "typescriotreact",
- 					"javascript",
-          "typescript"
-        ],
-        "path": "./js-and-ts.json"
-      }
+			{
+				"language": [
+					"javascriptreact",
+					"typescriotreact",
+					"javascript",
+					"typescript"
+				],
+				"path": "./js-and-ts.json"
+			},
+			{
+				"language": ["php"],
+				"path": "./php.json"
+			}
 		]
 	}
 }

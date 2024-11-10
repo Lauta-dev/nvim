@@ -1,18 +1,10 @@
 local set = vim.keymap.set
 local buf = vim.lsp.buf
 local cmd = vim.cmd
-local telescope = require("telescope.builtin")
 
 NVIM_STATES = {
 	normal = "n",
 	terminal = "t",
-}
-
-local telescope_preview = {
-	find_files = true,
-	buffers = true,
-	lsp_references = true,
-	git_files = true,
 }
 
 -- @param `state` Estado del que esta el editor.
@@ -27,6 +19,23 @@ end
 -- @param `action` La acción a realizar.
 local function space(state, key, action)
 	set(state, "<leader>" .. key, action, { silent = true, noremap = true })
+end
+
+local function buffer_exists_by_name(name)
+	for _, buf in ipairs(vim.fn.getbufinfo()) do
+		if buf.name == name then
+			return true
+		end
+	end
+	return false
+end
+
+local function fn()
+	if buffer_exists_by_name("term") == false then
+		return ":vsplit | horizontal resize 50 | terminal<CR><C-\\><C-n> :file term<CR>"
+	end
+
+	return "print('hi')"
 end
 
 local space_keys = {
@@ -92,6 +101,7 @@ local normal_keys = {
 		key = "C-l",
 		action = vim.diagnostic.open_float,
 	},
+
 	{
 		desc = "Open file explorer",
 		state = NVIM_STATES.normal,
@@ -119,12 +129,7 @@ local normal_keys = {
 			cmd.m("-2")
 		end,
 	},
-	{
-		desc = "Move line - down",
-		state = NVIM_STATES.normal,
-		key = "C-c",
-		action = cmd.bd,
-	},
+
 	{
 		desc = "Create new file",
 		state = NVIM_STATES.normal,
@@ -151,6 +156,13 @@ local normal_keys = {
 		key = "C-p",
 		action = buf.rename,
 	},
+
+	{
+		desc = "close/open terminal",
+		state = NVIM_STATES.normal,
+		key = "C-j",
+		action = fn(),
+	},
 }
 
 for _, obj in ipairs(space_keys) do
@@ -160,14 +172,3 @@ end
 for _, obj in ipairs(normal_keys) do
 	normal_key(obj.state, obj.key, obj.action)
 end
-
--- Mover el cursor de una ventana a otra
---[[normal_key("n", "A-Down", ":wincmd j<CR>")
-normal_key("n", "A-Up", ":wincmd k<CR>")
-normal_key("n", "A-Left", ":wincmd h<CR>")
-normal_key("n", "A-Right", ":wincmd l<CR>")--]]
-
---normal_key("t", "A-Down", "<cmd>wincmd j<CR>]]")
---normal_key("t", "A-Up", "<cmd>wincmd k<CR>]]")
---normal_key("t", "A-Left", "<cmd>wincmd h<CR>]]")
---normal_key("t", "A-Right", "<cmd>wincmd l<CR>]]")
