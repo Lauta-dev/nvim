@@ -17,7 +17,6 @@ return {
 		"bash",
 		"c_sharp",
 		"jsdoc",
-		"markdown",
 	},
 
 	indent = {
