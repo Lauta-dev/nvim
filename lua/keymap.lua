@@ -2,178 +2,104 @@ local set = vim.keymap.set
 local buf = vim.lsp.buf
 local cmd = vim.cmd
 
-NVIM_STATES = {
-  normal = "n",
-  terminal = "t",
-}
-
--- @param `state` Estado del que esta el editor.
 -- @param `key` Combinación de teclas que se pulsaran.
 -- @param `action` La acción a realizar.
-local function normal_key(state, key, action)
-  set(state, "<" .. key .. ">", action, { silent = true, noremap = true })
+local function normalKey(key, action)
+  set("n", "<" .. key .. ">", action, { silent = true, noremap = true })
 end
 
--- @param `state` Estado del que esta el editor.
 -- @param `key` Combinación de teclas que se pulsaran.
 -- @param `action` La acción a realizar.
-local function space(state, key, action)
-  set(state, "<leader>" .. key, action, { silent = true, noremap = true })
+local function spaceKey(key, action)
+  set("n", "<leader>" .. key, action, { silent = true, noremap = true })
 end
 
-local function buffer_exists_by_name(name)
-  for _, buf in ipairs(vim.fn.getbufinfo()) do
-    if buf.name == name then
-      return true
-    end
-  end
-  return false
-end
 
-local function fn()
-  if buffer_exists_by_name("term") == false then
-    return ":vsplit | horizontal resize 50 | terminal<CR><C-\\><C-n> :file term<CR>"
-  end
-
-  return "print('hi')"
-end
-
+-- Atajos usando tecla espaciadora
 local space_keys = {
-  {
-    desc = "Go to definition of method or function",
-    state = NVIM_STATES.normal,
-    key = "gd",
-    action = buf.definition,
-  },
-  {
-    desc = "",
-    state = NVIM_STATES.normal,
-    key = "gh",
-    action = buf.hover,
-  },
-  {
-    state = NVIM_STATES.normal,
-    key = "sh",
-    action = buf.signature_help,
-  },
-  {
-    state = NVIM_STATES.normal,
-    key = "e",
-    action = ":NvimTreeFocus<CR>",
-  },
-  {
-    state = NVIM_STATES.normal,
-    key = "ff",
-    action = ":Telescope find_files<CR>",
-  },
-  {
-    state = NVIM_STATES.normal,
-    key = "fg",
-    action = ":Telescope git_files<CR>",
-  },
-  {
-    state = NVIM_STATES.normal,
-    key = "fb",
-    action = ":Telescope buffers<CR>",
-  },
-  {
-    state = NVIM_STATES.normal,
-    key = "fr",
-    action = ":Telescope lsp_references<CR>",
-  },
-  {
-    state = NVIM_STATES.normal,
-    key = "ft",
-    action = cmd.TodoTelescope,
-  },
-  {
-    state = NVIM_STATES.normal,
-    key = "s",
-    action = [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
-  },
+
+  -- Ir a la definición
+  { key = "gd", action = buf.definition },
+
+  -- Hacer un hover
+  { key = "gh", action = buf.hover },
+
+  -- Mostrar ayuda
+  { key = "sh", action = buf.signature_help },
+
+  -- Mover el cursor a file explorer
+  { key = "e",  action = ":NvimTreeFocus<CR>" },
+
+  -- Abri telescope para buscar archivos
+  { key = "ff", action = ":Telescope find_files<CR>" },
+
+  -- Abrir telescope para buscar buffers
+  { key = "fb", action = ":Telescope buffers<CR>" },
+
+  -- Abrir telescope para buscar referencias
+  { key = "fr", action = ":Telescope lsp_references<CR>" },
+
+  -- Abri telescope para buscar TODO
+  { key = "ft", action = cmd.TodoTelescope, },
+  { key = "s",  action = [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]] },
 }
 
 -- Atajos usando Control
 local normal_keys = {
-  {
-    desc = "View diagnostic",
-    state = NVIM_STATES.normal,
-    key = "C-l",
-    action = vim.diagnostic.open_float,
-  },
 
-  {
-    desc = "Open file explorer",
-    state = NVIM_STATES.normal,
-    key = "C-b",
-    action = ":NvimTreeToggle<CR>",
-  },
-  {
-    desc = "Save file",
-    state = NVIM_STATES.normal,
-    key = "C-s",
-    action = ":w!<CR>",
-  },
-  {
-    desc = "Close buffer",
-    state = NVIM_STATES.normal,
-    key = "C-c",
-    action = cmd.bd,
-  },
+  -- Devuelve lineas eliminadas (Es lo contrario a "u")
+  { key = "C-r",    action = "<C-r>" },
 
-  {
-    desc = "Move line - up",
-    state = NVIM_STATES.normal,
-    key = "S-C-Up",
-    action = function()
-      cmd.m("-2")
-    end,
-  },
+  -- Elimina lineas puestas (Es la accion de "u")
+  { key = "C-u",    action = "u" },
 
-  {
-    desc = "Create new file",
-    state = NVIM_STATES.normal,
-    key = "C-n",
-    action = cmd.new,
-  },
+  -- Ver diagnostico
+  { key = "C-l",    action = vim.diagnostic.open_float },
 
-  {
-    desc = "Copy line to clipboard",
-    state = NVIM_STATES.normal,
-    key = "y",
-    action = '"+y',
-  },
-  {
-    desc = "Paste from clipboard",
-    state = NVIM_STATES.normal,
-    key = "p",
-    action = '"+p',
-  },
+  -- Abrir file explorer
+  { key = "C-b",    action = ":NvimTreeToggle<CR>" },
 
-  {
-    desc = "rename variables",
-    state = NVIM_STATES.normal,
-    key = "C-p",
-    action = buf.rename,
-  },
+  -- Guardar cambios
+  { key = "C-s",    action = ":w!<CR>" },
 
-  {
-    desc = "close/open terminal",
-    state = NVIM_STATES.normal,
-    key = "C-j",
-    action = fn(),
-  },
+  -- Cerrar buffer
+  { key = "C-c",    action = cmd.bd },
+
+  -- Mueve la linea a arriba
+  { key = "A-Up",   action = function() cmd.m("-2") end },
+
+  -- Mueve la linea a arriba
+  { key = "A-Down", action = function() cmd.m("+1") end },
+
+  -- Crear nuevo buffer
+  { key = "C-n",    action = cmd.new },
+
+  -- Copiar al portapapeles
+  { key = "y",      action = '"+y' },
+
+  -- Pegar desde el portapapeles
+  { key = "p",      action = '"+p' },
+
+  -- Renombrar variables/Función
+  { key = "C-p",    action = buf.rename },
+
+  -- Abrir/Cerra terminal
+  --{ key = "C-j", action = openTerminal(), },
 }
 
 for _, obj in ipairs(space_keys) do
-  space(obj.state, obj.key, obj.action)
+  spaceKey(obj.key, obj.action)
 end
 
 for _, obj in ipairs(normal_keys) do
-  normal_key(obj.state, obj.key, obj.action)
+  normalKey(obj.key, obj.action)
 end
 
+-- Dehabilitar tecla "u" que esta por defecto
 
+set("n", "u", "<Nop>", { noremap = true, silent = true })
+
+----------------------------------------
 
 -- Insert mode Right fluido
 vim.keymap.set('i', '<Right>', function()
