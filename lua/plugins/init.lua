@@ -1,20 +1,34 @@
 local n = {
   "plugins/lsp",
-  "plugins/themes",
-  "plugins/SchemaStore",
 }
 
 local plugins = {
+
+  -- Lua
   {
-    "rest-nvim/rest.nvim",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      opts = function(_, opts)
-        --opts.ensure_installed = opts.ensure_installed or {}
-        --table.insert(opts.ensure_installed, "http")
-      end,
+    "olimorris/persisted.nvim",
+    opts = {
     },
-    enabled = false,
+  },
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000
+  },
+  {
+    "j-hui/fidget.nvim",
+    tag = "legacy", -- o la versión estable
+
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      require("fidget").setup {}
+    end
+  },
+
+  {
+    "b0o/schemastore.nvim",
+    lazy = true,
+    ft = { "json", "yaml" },
   },
 
   {
@@ -22,12 +36,6 @@ local plugins = {
     dependencies = { "nvim-lua/plenary.nvim" },
     config = true,
     cmd = { "TodoTelescope" },
-  },
-
-  {
-    "mistweaverco/kulala.nvim",
-    opts = {},
-    ft = { "http" },
   },
 
   {
@@ -59,6 +67,7 @@ local plugins = {
   },
   {
     "nvim-lualine/lualine.nvim",
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       local config = require("plugins.configs.lualine_conf")
       require("lualine").setup(config)
@@ -67,6 +76,7 @@ local plugins = {
 
   {
     "nvim-treesitter/nvim-treesitter",
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       local config = require("plugins.configs.nvim-treesitter")
       require("nvim-treesitter.configs").setup(config)
@@ -76,20 +86,41 @@ local plugins = {
   {
     "nvim-tree/nvim-tree.lua",
     config = true,
+    opts = {
+      filters = {
+        dotfiles = true, -- esto oculta todos los archivos que empiezan con '.'
+        custom = {},     -- puedes agregar patrones extra si quieres
+      },
+    }
   },
 
   {
     "nvim-telescope/telescope.nvim",
     tag = "0.1.5",
+    cmd = "Telescope",
+    lazy = true,
+
+    config = function()
+      require("telescope").load_extension("persisted")
+      require("telescope").load_extension("fzf")
+    end,
 
     dependencies = {
       "nvim-lua/plenary.nvim",
       "tsakirist/telescope-lazy.nvim",
+      {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        build = 'make',
+        cond = function()
+          return vim.fn.executable 'make' == 1
+        end,
+      },
     },
   },
 
   {
     "lukas-reineke/indent-blankline.nvim",
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       local hooks = require("ibl.hooks")
       local config = require("plugins.configs.indent-blankline")
@@ -100,6 +131,11 @@ local plugins = {
 
   {
     "lewis6991/gitsigns.nvim",
+    cond = function()
+      -- devuelve true si hay un directorio .git en el pwd
+      return vim.fn.isdirectory(".git") == 1
+    end,
+
     config = function()
       require("gitsigns").setup(require("plugins.configs.gitsigns-nvim"))
     end,
@@ -114,7 +150,6 @@ local plugins = {
       "MasonUninstallAll",
       "MasonLog",
     },
-
     config = true,
   },
 
@@ -145,6 +180,7 @@ local plugins = {
 
   {
     'saghen/blink.cmp',
+    event = "InsertEnter",
     -- optional: provides snippets for the snippet source
     dependencies = { 'rafamadriz/friendly-snippets' },
 
@@ -170,7 +206,16 @@ local plugins = {
       -- C-k: Toggle signature help (if signature.enabled = true)
       --
       -- See :h blink-cmp-config-keymap for defining your own keymap
-      keymap = { preset = 'default' },
+      keymap = {
+        preset = 'default',
+
+        ['<Up>'] = false,
+        ['<Down>'] = false,
+        ["<CR>"] = { "select_and_accept", "fallback" }, -- Enter
+        ["<A-Up>"] = { "select_prev", "fallback" },     -- Alt+Up
+        ["<A-Down>"] = { "select_next", "fallback" },   -- Alt+Down
+
+      },
 
       appearance = {
         -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
@@ -179,7 +224,17 @@ local plugins = {
       },
 
       -- (Default) Only show the documentation popup when manually triggered
-      completion = { documentation = { auto_show = false } },
+      completion = {
+        menu = { border = 'single' },
+        documentation = {
+          auto_show = true,
+          window = { border = 'single' }
+        },
+      },
+      signature = {
+        enabled = true,
+        window = { border = 'single' }
+      },
 
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`

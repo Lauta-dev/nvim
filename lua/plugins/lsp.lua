@@ -1,19 +1,16 @@
 return {
-  { "williamboman/mason-lspconfig.nvim", config = true },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    lazy = true,
+    event = { "BufReadPre", "BufNewFile" },
+    config = true,
+  },
 
   {
     "neovim/nvim-lspconfig",
-    dependencies = {
-      {
-        "SmiteshP/nvim-navbuddy",
-        dependencies = {
-          "SmiteshP/nvim-navic",
-          "MunifTanjim/nui.nvim",
-          'saghen/blink.cmp',
-        },
-        opts = { lsp = { auto_attach = true } },
-      },
-    },
+    lazy = true,
+    event = { "BufReadPre", "BufNewFile" },
+
     config = function()
       local lsp = require("lspconfig")
       --local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -109,19 +106,26 @@ return {
       -- PHP
       lsp.intelephense.setup({ capabilities = capabilities })
 
-      -- JSON
-      lsp.jsonls.setup({
-        capabilities = capabilities,
-        settings = {
-          json = {
-            schemas = require("schemastore").json.schemas(),
-            validate = { enable = true },
-          },
-        },
+      vim.api.nvim_create_autocmd("BufEnter", {
+        pattern = "*.json",
+        callback = function(args)
+          -- JSON
+          lsp.jsonls.setup({
+            capabilities = capabilities,
+            settings = {
+              json = {
+                schemas = require("schemastore").json.schemas(),
+                validate = { enable = true },
+              },
+            },
+          })
+        end
       })
 
+
+
       -- yaml
-      lsp.yamlls.setup({
+      --[[lsp.yamlls.setup({
         capabilities = capabilities,
         settings = {
           yaml = {
@@ -129,7 +133,7 @@ return {
             validate = { enable = true },
           },
         },
-      })
+      })--]]
     end,
   },
 }
