@@ -3,13 +3,12 @@ local n = {
 }
 
 local plugins = {
-
-  -- Lua
   {
     "olimorris/persisted.nvim",
     opts = {
     },
   },
+
   {
     "catppuccin/nvim",
     name = "catppuccin",
