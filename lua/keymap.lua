@@ -42,6 +42,10 @@ local space_keys = {
   -- Abri telescope para buscar TODO
   { key = "ft", action = cmd.TodoTelescope, },
   { key = "s",  action = [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]] },
+
+  -- Abrir terminal
+  { key = "tf", action = ":ToggleTerm size=20 direction=float name=Terminal<CR>" },
+  { key = "tt", action = ":ToggleTerm size=20 direction=horizontal name=Terminal<CR>" },
 }
 
 -- Atajos usando Control
@@ -82,9 +86,6 @@ local normal_keys = {
 
   -- Renombrar variables/Función
   { key = "C-p",    action = buf.rename },
-
-  -- Abrir/Cerra terminal
-  --{ key = "C-j", action = openTerminal(), },
 }
 
 for _, obj in ipairs(space_keys) do
@@ -94,6 +95,14 @@ end
 for _, obj in ipairs(normal_keys) do
   normalKey(obj.key, obj.action)
 end
+
+function _G.set_terminal_keymaps()
+  local opts = { buffer = 0 }
+  vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+end
+
+-- if you only want these mappings for toggle term use term://*toggleterm#* instead
+vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 
 -- Dehabilitar tecla "u" que esta por defecto
 

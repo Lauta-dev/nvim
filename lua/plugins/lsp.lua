@@ -33,18 +33,27 @@ return {
         .. "/.local/share/lauta_dev_nvim/mason/packages/angular-language-server/node_modules/@angular/language-server/",
       }
 
-      -- WEB
-      lsp.html.setup({ capabilities = capabilities })  -- HTML
-      lsp.cssls.setup({ capabilities = capabilities }) -- CSS
+
+      -- GO
+      lsp.gopls.setup({ capabilities = capabilities })
+
+      -- HTML
+      lsp.html.setup({ capabilities = capabilities })
+
+      -- CSS
+      lsp.cssls.setup({ capabilities = capabilities })
+
+      -- Angular
       lsp.angularls.setup({
         capabilities = capabilities,
         cmd = angular_cmd,
         on_new_config = function(new_config)
           new_config.cmd = angular_cmd
         end,
-      })                      -- Angular
+      })
 
-      lsp.tailwindcss.setup({ -- TailwindCSS
+      -- TailwindCSS
+      lsp.tailwindcss.setup({
         filetypes = {
           "astro",
           "javascriptreact",
@@ -53,7 +62,8 @@ return {
         capabilities = capabilities,
       })
 
-      lsp.ts_ls.setup({ capabilities = capabilities }) -- JS/TS/JSX/TSX
+      -- JS/TS/JSX/TSX
+      lsp.ts_ls.setup({ capabilities = capabilities })
 
       -- Docker
       lsp.docker_compose_language_service.setup({ capabilities = capabilities })
@@ -74,21 +84,13 @@ return {
 
           client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
             runtime = {
-              -- Tell the language server which version of Lua you're using
-              -- (most likely LuaJIT in the case of Neovim)
               version = "LuaJIT",
             },
-            -- Make the server aware of Neovim runtime files
             workspace = {
               checkThirdParty = false,
               library = {
                 vim.env.VIMRUNTIME,
-                -- Depending on the usage, you might want to add additional paths here.
-                -- "${3rd}/luv/library"
-                -- "${3rd}/busted/library",
               },
-              -- or pull in all of 'runtimepath'. NOTE: this is a lot slower and will cause issues when working on your own configuration (see https://github.com/neovim/nvim-lspconfig/issues/3189)
-              -- library = vim.api.nvim_get_runtime_file("", true)
             },
           })
         end,
@@ -106,10 +108,10 @@ return {
       -- PHP
       lsp.intelephense.setup({ capabilities = capabilities })
 
+      -- JSON
       vim.api.nvim_create_autocmd("BufEnter", {
         pattern = "*.json",
         callback = function(args)
-          -- JSON
           lsp.jsonls.setup({
             capabilities = capabilities,
             settings = {
@@ -122,18 +124,21 @@ return {
         end
       })
 
-
-
-      -- yaml
-      --[[lsp.yamlls.setup({
-        capabilities = capabilities,
-        settings = {
-          yaml = {
-            schemas = require("schemastore").yaml.schemas(),
-            validate = { enable = true },
-          },
-        },
-      })--]]
+      -- YAML/YML
+      vim.api.nvim_create_autocmd("BufEnter", {
+        pattern = "*.yml",
+        callback = function(args)
+          lsp.yamlls.setup({
+            capabilities = capabilities,
+            settings = {
+              yaml = {
+                schemas = require("schemastore").yaml.schemas(),
+                validate = { enable = true },
+              },
+            },
+          })
+        end
+      })
     end,
   },
 }
