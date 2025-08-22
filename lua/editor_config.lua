@@ -34,21 +34,20 @@ vim.opt.undodir = os.getenv("HOME") .. "/.local/share/nvim/undo"
 
 -- Configuración de diagnostics
 vim.diagnostic.config({
-  update_in_insert = true,
-  signs = false,
-  underline = true,
-  virtual_text = {
-    prefix = "●"
-  },
-  virtual_lines = false,
-  float = {
-    focusable = true,
-    border = "single",
-
-  },
+	update_in_insert = true,
+	signs = false,
+	underline = true,
+	virtual_text = {
+		prefix = "●",
+	},
+	virtual_lines = false,
+	float = {
+		focusable = true,
+		border = "single",
+	},
 })
 
 -- Configuración general de tabs en Neovim
-vim.opt.tabstop = 2      -- Cuántos espacios representa un tab
-vim.opt.shiftwidth = 2   -- Cuántos espacios usa << o >> al indentar
+vim.opt.tabstop = 2 -- Cuántos espacios representa un tab
+vim.opt.shiftwidth = 2 -- Cuántos espacios usa << o >> al indentar
 vim.opt.expandtab = true -- Usar espacios en vez de tabs
