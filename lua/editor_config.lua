@@ -28,17 +28,23 @@ opt.clipboard = "unnamedplus"
 opt.termguicolors = true
 opt.conceallevel = 3
 
+-- Activa el historial persistente
+vim.opt.undofile = true
+vim.opt.undodir = os.getenv("HOME") .. "/.local/share/nvim/undo"
+
 -- Configuración de diagnostics
 vim.diagnostic.config({
   update_in_insert = true,
-  signs = true,
-  underline = false,
-  virtual_text = true,
+  signs = false,
+  underline = true,
+  virtual_text = {
+    prefix = "●"
+  },
   virtual_lines = false,
   float = {
     focusable = true,
     border = "single",
-    header = false,
+
   },
 })
 
