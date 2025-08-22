@@ -1,8 +1,53 @@
-local n = {
+local external_plugins = {
   "plugins/lsp",
 }
 
 local plugins = {
+  {
+    'echasnovski/mini.comment',
+    version = '*',
+    lazy = true,
+    opts = require("plugins.configs.mini-commnet")
+  },
+
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+
+    ---@type snacks.Config
+    opts = {
+      bigfile = { enabled = false },
+      dashboard = { enabled = false },
+      explorer = { enabled = true, replace_netrw = true, },
+
+      indent = {
+        enabled = true,
+        animate = {
+          --enabled = vim.fn.has("nvim-0.10") == 1,
+          style = "out",
+          easing = "linear",
+          duration = {
+            step = 0,  -- ms per step
+            total = 0, -- maximum duration
+          },
+        },
+      },
+      input = {
+        enabled = true,
+      },
+      picker = {
+        enabled = true,
+
+      },
+      notifier = { enabled = true },
+      quickfile = { enabled = false },
+      scope = { enabled = true },
+      scroll = { enabled = false },
+      statuscolumn = { enabled = false },
+      words = { enabled = false },
+    },
+  },
 
   {
     'akinsho/toggleterm.nvim',
@@ -103,6 +148,7 @@ local plugins = {
   {
     "nvim-tree/nvim-tree.lua",
     config = true,
+    enabled = false,
     opts = require("plugins.configs.nvim-tree")
   },
 
@@ -111,6 +157,7 @@ local plugins = {
     tag = "0.1.5",
     cmd = "Telescope",
     lazy = true,
+    enabled = false,
 
     config = function()
       require("telescope").load_extension("persisted")
@@ -133,20 +180,17 @@ local plugins = {
   {
     "lukas-reineke/indent-blankline.nvim",
     event = { "BufReadPre", "BufNewFile" },
+    enabled = false,
     config = function()
       local hooks = require("ibl.hooks")
       local config = require("plugins.configs.indent-blankline")
       config.load_rainbow(hooks)
-      require("ibl").setup({ scope = { highlight = config.highlight } })
+      require("ibl").setup()
     end,
   },
 
   {
     "lewis6991/gitsigns.nvim",
-    cond = function()
-      return vim.fn.isdirectory(".git") == 1
-    end,
-
     config = function()
       require("gitsigns").setup(require("plugins.configs.gitsigns-conf"))
     end,
@@ -199,9 +243,12 @@ local plugins = {
   }
 }
 
-for _, v in ipairs(n) do
-  for _, d in ipairs(require(v)) do
-    table.insert(plugins, d)
+for _, plugin_module in ipairs(external_plugins) do
+  local success, plugin_config = pcall(require, plugin_module)
+  if success then
+    vim.list_extend(plugins, plugin_config)
+  else
+    vim.notify("Failed to load plugin: " .. plugin_module, vim.log.levels.WARN)
   end
 end
 
