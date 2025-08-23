@@ -12,8 +12,8 @@ local plugins = {
 
 	{
 		"folke/snacks.nvim",
-		priority = 1000,
-		lazy = false,
+		lazy = true,
+		cmd = { "Snacks", "SnacksPicker" },
 
 		---@type snacks.Config
 		opts = {
@@ -54,6 +54,7 @@ local plugins = {
 		config = true,
 		lazy = true,
 		cmd = "ToggleTerm",
+		enabled = false,
 	},
 
 	{
@@ -88,9 +89,9 @@ local plugins = {
 
 	{
 		"folke/todo-comments.nvim",
+		cmd = { "SnacksPicker" },
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = true,
-		cmd = { "TodoTelescope" },
 	},
 
 	{
@@ -116,24 +117,26 @@ local plugins = {
 
 	{
 		"nvim-tree/nvim-web-devicons",
-		cmd = {
-			"NvimTreeToggle",
-		},
+		cmd = { "Snacks", "SnacksPicker" },
 		lazy = true,
 	},
 	{
 		"windwp/nvim-autopairs",
-		event = "InsertEnter",
+		event = { "BufReadPre", "BufNewFile" },
 		config = true,
 	},
 	{
-		"nvim-lualine/lualine.nvim",
+		"echasnovski/mini.statusline",
+		version = "*",
 		event = { "BufReadPre", "BufNewFile" },
-		config = function()
-			local config = require("plugins.configs.lualine-conf")
-			require("lualine").setup(config)
-		end,
+		lazy = true,
+		opts = require("plugins.configs.mini-statusline"),
 	},
+	-- {
+	-- 	"nvim-lualine/lualine.nvim",
+	-- 	--event = { "BufReadPre", "BufNewFile" },
+	--    opts = {}
+	-- },
 
 	{
 		"nvim-treesitter/nvim-treesitter",
@@ -190,6 +193,7 @@ local plugins = {
 
 	{
 		"lewis6991/gitsigns.nvim",
+		event = { "BufReadPre", "BufNewFile" },
 		config = function()
 			require("gitsigns").setup(require("plugins.configs.gitsigns-conf"))
 		end,
@@ -234,7 +238,7 @@ local plugins = {
 
 	{
 		"saghen/blink.cmp",
-		event = "InsertEnter",
+		event = { "BufReadPre", "BufNewFile" },
 		dependencies = { "rafamadriz/friendly-snippets" },
 		version = "1.*",
 		opts = require("plugins.configs.blick"),
