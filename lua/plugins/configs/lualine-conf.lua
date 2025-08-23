@@ -2,8 +2,8 @@ return {
 	options = {
 		icons_enabled = true,
 		theme = "auto",
-		component_separators = { left = "", right = "" },
-		section_separators = { left = "", right = "" },
+		component_separators = { left = "", right = "" },
+		section_separators = { left = "", right = "" },
 
 		ignore_focus = {},
 		always_divide_middle = true,
@@ -24,9 +24,9 @@ return {
 	},
 	sections = {
 		lualine_a = { "mode" },
-		lualine_b = { "brach", "diff", "diagnostics" },
-		lualine_x = {},
-		lualine_y = { "progress" },
+		lualine_b = { "branch", "diff", "diagnostics" },
+		lualine_x = { "filetype" },
+		lualine_y = {},
 		lualine_z = { "location" },
 	},
 }
