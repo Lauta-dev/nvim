@@ -2,18 +2,40 @@ local map = vim.keymap.set
 local buf = vim.lsp.buf
 local cmd = vim.cmd
 
--- @param `key` Combinación de teclas que se pulsaran.
--- @param `action` La acción a realizar.
--- @param `desc` Descripción.
+---@param key string Combinación de teclas que se pulsaran.
+---@param action string La acción a realizar.
+---@param desc string Descripción.
 local function normalKey(key, action, desc)
 	map("n", "<" .. key .. ">", action, { desc = desc, silent = true, noremap = true })
 end
 
--- @param `key` Combinación de teclas que se pulsaran.
--- @param `action` La acción a realizar.
--- @param `desc` Descripción.
+---@param key string Combinación de teclas que se pulsaran.
+---@param action string La acción a realizar.
+---@param desc string Descripción.
 local function spaceKey(key, action, desc)
 	map("n", key, action, { desc = desc, silent = true, noremap = true })
+end
+
+---@param picker string picker
+local function pickers(picker)
+	require("snacks.picker")[picker]()
+end
+
+---@param g string Appps generales
+local function general_app(g)
+	local req = require("snacks")
+
+	if g == "explorer" then
+		req.explorer()
+	end
+
+	if g == "terminal" then
+		req.terminal.toggle()
+	end
+
+	if g == "lazygit" then
+		req.lazygit()
+	end
 end
 
 -- Atajos usando tecla espaciadora
@@ -23,14 +45,17 @@ local space_keys = {
 	{ key = "sh", action = buf.signature_help, desc = "Mostrar ayuda" },
 	{
 		key = "ft",
-		action = cmd.TodoTelescope,
+		-- action = cmd.TodoTelescope,
+		action = function()
+			pickers("todo_comments")
+		end,
 		desc = "Abrir telescope para buscar TODO",
 	},
 
 	{
 		key = "e",
 		action = function()
-			Snacks.explorer()
+			general_app("explorer")
 		end,
 		desc = "Mover el cursor al file explorer",
 	},
@@ -38,32 +63,38 @@ local space_keys = {
 	{
 		key = "ff",
 		action = function()
-			Snacks.picker.files()
+			pickers("files")
 		end,
 		desc = "Abrir telescope para buscar archivos",
 	},
 	{
 		key = "fb",
 		action = function()
-			Snacks.picker.buffers()
+			pickers("buffers")
 		end,
 		desc = "Abrir telescope para buscar buffers",
 	},
 	{
 		key = "fr",
 		action = function()
-			Snacks.picker.lsp_references()
+			pickers("lsp_references")
 		end,
 		desc = "Abrir telescope para buscar referencias",
 	},
 	{
 		key = "fg",
 		action = function()
-			Snacks.picker.grep()
+			pickers("grep")
 		end,
 		desc = "Abrir telescope para buscar caracteres",
 	},
-
+	{
+		key = "fp",
+		action = function()
+			pickers("projects")
+		end,
+		desc = "Buscar proyectos",
+	},
 	{
 		key = "s",
 		action = [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
@@ -73,14 +104,14 @@ local space_keys = {
 	{
 		key = "tf",
 		action = function()
-			Snacks.terminal.toogle()
+			general_app("terminal")
 		end,
 		desc = "Abrir terminal flotante",
 	},
 	{
 		key = "tg",
 		action = function()
-			Snacks.lazygit()
+			general_app("lazygit")
 		end,
 		desc = "Abrir Lazygit",
 	},
