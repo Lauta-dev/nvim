@@ -1,8 +1,7 @@
 return {
-	-- Module mappings. Use `''` (empty string) to disable one.
 	mappings = {
-		comment = "",
-		comment_line = "gc",
+		comment = "gc",
+		comment_line = "",
 		comment_visual = "gc",
 		textobject = "",
 	},

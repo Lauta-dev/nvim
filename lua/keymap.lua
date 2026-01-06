@@ -218,6 +218,11 @@ vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 
 map("n", "u", "<Nop>", { noremap = true, silent = true })
 
+-- Evita que salga del modo Visual al usar < o >
+
+vim.keymap.set("x", "<", "<gv", { silent = true })
+vim.keymap.set("x", ">", ">gv", { silent = true })
+
 ----------------------------------------
 
 -- Insert mode Right fluido

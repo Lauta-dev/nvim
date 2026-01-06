@@ -2,8 +2,8 @@ local opt = vim.opt
 local g = vim.g
 
 -- Colorscheme
-vim.cmd.colorscheme("catppuccin-mocha")
-
+--vim.cmd([[colorscheme nordic]])
+vim.cmd([[colorscheme catppuccin-mocha]])
 -- Leader
 g.loaded_netrw = 1
 g.loaded_netrwPlugin = 1
@@ -51,3 +51,31 @@ vim.diagnostic.config({
 vim.opt.tabstop = 2 -- Cuántos espacios representa un tab
 vim.opt.shiftwidth = 2 -- Cuántos espacios usa << o >> al indentar
 vim.opt.expandtab = true -- Usar espacios en vez de tabs
+
+if os.getenv("XDG_SESSION_TYPE") == "wayland" then
+	vim.g.clipboard = {
+		name = "wl-clipboard",
+		copy = {
+			["+"] = "wl-copy",
+			["*"] = "wl-copy",
+		},
+		paste = {
+			["+"] = "wl-paste --no-newline",
+			["*"] = "wl-paste --no-newline",
+		},
+		cache_enabled = true,
+	}
+else
+	vim.g.clipboard = {
+		name = "xclip",
+		copy = {
+			["+"] = "xclip -selection clipboard",
+			["*"] = "xclip -selection clipboard",
+		},
+		paste = {
+			["+"] = "xclip -selection clipboard -o",
+			["*"] = "xclip -selection clipboard -o",
+		},
+		cache_enabled = true,
+	}
+end

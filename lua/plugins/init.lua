@@ -4,6 +4,12 @@ local external_plugins = {
 
 local plugins = {
 	{
+		"Fildo7525/pretty_hover",
+		event = "LspAttach",
+		opts = {},
+	},
+
+	{
 		"echasnovski/mini.comment",
 		version = "*",
 		lazy = true,
@@ -71,6 +77,18 @@ local plugins = {
 		name = "catppuccin",
 		priority = 1000,
 	},
+	-- {
+	-- 	"folke/tokyonight.nvim",
+	-- 	lazy = false,
+	-- 	priority = 1000,
+	-- 	opts = {},
+	-- 	config = function()
+	-- 		require("tokyonight").setup({
+	-- 			style = "night",
+	-- 		})
+	-- 	end,
+	-- },
+
 	{
 		"j-hui/fidget.nvim",
 		tag = "legacy", -- o la versión estable
@@ -105,6 +123,7 @@ local plugins = {
 					javascriptreact = { "biome" },
 					typescriptreact = { "biome" },
 					json = { "biome" },
+					astro = { "prettier" },
 				},
 				format_on_save = {
 					timeout_ms = 500,
@@ -255,4 +274,20 @@ for _, plugin_module in ipairs(external_plugins) do
 	end
 end
 
-require("lazy").setup(plugins)
+require("lazy").setup(plugins, {
+	performance = {
+		rtp = {
+			disabled_plugins = {
+				"gzip",
+				"matchit",
+				"matchparen",
+				"netrwPlugin",
+				"tarPlugin",
+				"tohtml",
+				"tutor",
+				"zipPlugin",
+				"rplugin",
+			},
+		},
+	},
+})

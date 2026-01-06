@@ -28,6 +28,9 @@ return {
 				css_module = "cssmodules_ls",
 				json = "jsonls",
 				yaml = "yamlls",
+				astro = "astro",
+				py = "pyright",
+				python = "pyright",
 			}
 
 			local serversWithScheme = {

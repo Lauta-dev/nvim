@@ -7,7 +7,7 @@ return {
 			local filetype = vim.bo.filetype
 			local filename = vim.fn.expand("%:t") -- Solo el nombre del archivo
 			if filename == "" then
-				filename = "[No Name]"
+				filename = ""
 			end
 
 			local function custom_location()
