@@ -10,43 +10,83 @@ local plugins = {
 		opts = require("plugins.configs.mini-commnet"),
 	},
 
-	{
-		"folke/snacks.nvim",
-		lazy = true,
-		cmd = { "Snacks", "SnacksPicker" },
+  -- ── Snacks.nvim ───────────────────────────────────────────────────────────────
+  {
+    "folke/snacks.nvim",
+    priority = 900,
+    lazy     = false,
+    -- Only dashboard + notifier + quickfile need to be ready at start.
+    -- Everything else (picker, indent, words…) loads on demand.
+    opts = {
+      -- Big file protection
+      bigfile = { enabled = true, size = 1.5 * 1024 * 1024 },
 
-		---@type snacks.Config
-		opts = {
-			bigfile = { enabled = false },
-			dashboard = { enabled = false },
-			explorer = { enabled = true, replace_netrw = true },
+      -- Dashboard
+      dashboard = {
+        enabled = true,
+        preset  = {
+          header = [[
+ ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
+ ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
+ ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
+ ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
+ ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
+ ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
+          keys = {
+            { icon = " ", key = "f", desc = "Find File",      action = function() require("snacks").picker.files() end },
+            { icon = " ", key = "g", desc = "Live Grep",      action = function() require("snacks").picker.grep() end },
+            { icon = " ", key = "r", desc = "Recent",         action = function() require("snacks").picker.recent() end },
+            { icon = "󰒲 ", key = "l", desc = "Lazy",          action = ":Lazy" },
+            { icon = " ", key = "q", desc = "Quit",           action = ":qa" },
+          },
+        },
+      },
 
-			indent = {
-				enabled = true,
-				animate = {
-					--enabled = vim.fn.has("nvim-0.10") == 1,
-					style = "out",
-					easing = "linear",
-					duration = {
-						step = 0, -- ms per step
-						total = 0, -- maximum duration
-					},
-				},
-			},
-			input = {
-				enabled = true,
-			},
-			picker = {
-				enabled = true,
-			},
-			notifier = { enabled = true },
-			quickfile = { enabled = true },
-			scope = { enabled = true },
-			scroll = { enabled = false },
-			statuscolumn = { enabled = false },
-			words = { enabled = false },
-		},
-	},
+      -- Picker (replaces Telescope entirely)
+      picker = {
+        enabled = true,
+        ui_select = true,  -- replaces vim.ui.select
+        sources = {
+          explorer = {
+            -- Snacks file-tree explorer
+            hidden = true,
+            ignore = true,
+          },
+        },
+        win = {
+          input = {
+            keys = {
+              ["<Esc>"] = { "close", mode = { "i", "n" } },
+            },
+          },
+        },
+      },
+
+      -- Explorer sidebar
+      explorer = { enabled = true },
+
+      -- Indent guides (replaces indent-blankline for speed)
+      indent = {
+        enabled  = true,
+        animate  = { enabled = false },
+        scope    = { enabled = true },
+        chunk    = { enabled = false },
+      },
+
+      input     = { enabled = true },
+      notifier  = { enabled = true, timeout = 3000, style = "compact" },
+      quickfile = { enabled = true },   -- fast open for big files
+      scroll    = { enabled = false },  -- skip scroll animations for perf
+      statuscolumn = { enabled = true },
+      words     = { enabled = true },
+    },
+    keys = {
+      { "<leader>bd", function() require("snacks").bufdelete() end,           desc = "Delete Buffer" },
+      { "<leader>gB", function() require("snacks").gitbrowse() end,           desc = "Git Browse" },
+      { "<leader>nh", function() require("snacks").notifier.show_history() end, desc = "Notification History" },
+      { "<leader>un", function() require("snacks").notifier.hide() end,       desc = "Dismiss Notifications" },
+    },
+  },
 
 	{
 		"akinsho/toggleterm.nvim",
@@ -67,10 +107,40 @@ local plugins = {
 	},
 
 	{
-		"catppuccin/nvim",
-		name = "catppuccin",
-		priority = 1000,
-	},
+    "catppuccin/nvim",
+    name     = "catppuccin",
+    priority = 1000,
+    lazy     = false,
+    opts = {
+      flavour              = "mocha",
+      transparent_background = false,
+      term_colors          = true,
+      integrations = {
+        blink_cmp    = true,
+        gitsigns     = true,
+        indent_blankline = { enabled = true },
+        mason        = true,
+        mini         = { enabled = true },
+        nvimtree     = false,   -- using snacks explorer
+        telescope    = { enabled = false },
+        treesitter   = true,
+        fidget       = true,
+        native_lsp   = {
+          enabled    = true,
+          underlines = {
+            errors   = { "underline" },
+            hints    = { "underline" },
+            warnings = { "underline" },
+            information = { "underline" },
+          },
+        },
+      },
+    },
+    config = function(_, opts)
+      require("catppuccin").setup(opts)
+      vim.cmd.colorscheme("catppuccin")
+    end,
+  },
 	-- {
 	-- 	"folke/tokyonight.nvim",
 	-- 	lazy = false,
@@ -85,12 +155,8 @@ local plugins = {
 
 	{
 		"j-hui/fidget.nvim",
-		tag = "legacy", -- o la versión estable
-
 		event = { "BufReadPre", "BufNewFile" },
-		config = function()
-			require("fidget").setup({})
-		end,
+    opts  = { notification = { window = { winblend = 0 } } },
 	},
 
 	{

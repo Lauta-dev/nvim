@@ -12,15 +12,14 @@ return {
 		event = { "BufReadPre", "BufNewFile" },
 
 		config = function()
-			--local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
 			local lsp = vim.lsp
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
+			-- Blink ya suele manejar snippets, pero forzarlo no hace daño
 			capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 			local servers = {
 				go = "gopls",
-				ts_ls = "ts_ls",
+				vtsls = "vtsls",
 				bash = "bashls",
 				lua = "lua_ls",
 				html = "html",
@@ -29,16 +28,14 @@ return {
 				json = "jsonls",
 				yaml = "yamlls",
 				astro = "astro",
-				py = "pyright",
-				python = "pyright",
+				python = "pyright", -- Simplificado para que coincida con la key
 			}
 
 			local serversWithScheme = {
-				json = "jsonls",
-				yaml = "yamlls",
+				json = true,
+				yaml = true,
 			}
 
-			--- @param lang string Lenguaje
 			local function add_schema(lang)
 				return {
 					[lang] = {
@@ -49,17 +46,26 @@ return {
 			end
 
 			for lang, server in pairs(servers) do
-				local config = { capabilities = capabilities }
+				local config = {
+					capabilities = capabilities,
+				}
 
+				-- Inyectar Schemas si es necesario
 				if serversWithScheme[lang] then
 					config.settings = add_schema(lang)
 				end
 
-				if lang == "ts_ls" then
-					config.root_dir = require("plugins.configs.lsp.ts_ls").config
+				-- Configuración específica para VTSLS con BUN
+				if server == "vtsls" then
+					-- Forzamos a Bun para eliminar el lag de inicio de Node
+					config.cmd = { "bun", "x", "vtsls", "--stdio" }
+					-- Cargamos tus settings específicos (importante para React/Next.js)
+					config.settings = require("plugins.configs.lsp.vtsls").settings
 				end
 
+				-- Aplicar la configuración al servidor
 				lsp.config(server, config)
+				-- Activar el servidor
 				lsp.enable(server)
 			end
 		end,
