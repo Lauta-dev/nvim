@@ -4,12 +4,6 @@ local external_plugins = {
 
 local plugins = {
 	{
-		"Fildo7525/pretty_hover",
-		event = "LspAttach",
-		opts = {},
-	},
-
-	{
 		"echasnovski/mini.comment",
 		version = "*",
 		lazy = true,
@@ -46,7 +40,7 @@ local plugins = {
 				enabled = true,
 			},
 			notifier = { enabled = true },
-			quickfile = { enabled = false },
+			quickfile = { enabled = true },
 			scope = { enabled = true },
 			scroll = { enabled = false },
 			statuscolumn = { enabled = false },
@@ -151,11 +145,6 @@ local plugins = {
 		lazy = true,
 		opts = require("plugins.configs.mini-statusline"),
 	},
-	-- {
-	-- 	"nvim-lualine/lualine.nvim",
-	-- 	--event = { "BufReadPre", "BufNewFile" },
-	--    opts = {}
-	-- },
 
 	{
 		"nvim-treesitter/nvim-treesitter",
