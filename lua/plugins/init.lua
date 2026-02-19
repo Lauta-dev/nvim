@@ -7,7 +7,7 @@ local plugins = {
 		"echasnovski/mini.comment",
 		version = "*",
 		lazy = true,
-		opts = require("plugins.configs.mini-commnet"),
+		opts = require("lua.plugins.configs.mini-comment"),
 	},
 
 	-- ── Snacks.nvim ───────────────────────────────────────────────────────────────
@@ -15,92 +15,7 @@ local plugins = {
 		"folke/snacks.nvim",
 		priority = 900,
 		lazy = false,
-		-- Only dashboard + notifier + quickfile need to be ready at start.
-		-- Everything else (picker, indent, words…) loads on demand.
-		opts = {
-			-- Big file protection
-			bigfile = { enabled = true, size = 1.5 * 1024 * 1024 },
-
-			-- Dashboard
-			dashboard = {
-				enabled = true,
-				preset = {
-					header = [[
- ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
- ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
- ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
- ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
- ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
- ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
-					keys = {
-						{
-							icon = " ",
-							key = "f",
-							desc = "Find File",
-							action = function()
-								require("snacks").picker.files()
-							end,
-						},
-						{
-							icon = " ",
-							key = "g",
-							desc = "Live Grep",
-							action = function()
-								require("snacks").picker.grep()
-							end,
-						},
-						{
-							icon = " ",
-							key = "r",
-							desc = "Recent",
-							action = function()
-								require("snacks").picker.recent()
-							end,
-						},
-						{ icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
-						{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
-					},
-				},
-			},
-
-			-- Picker (replaces Telescope entirely)
-			picker = {
-				enabled = true,
-				ui_select = true, -- replaces vim.ui.select
-				sources = {
-					explorer = {
-						-- Snacks file-tree explorer
-						hidden = true,
-						ignore = true,
-					},
-				},
-				win = {
-					input = {
-						keys = {
-							["<Esc>"] = { "close", mode = { "i", "n" } },
-						},
-					},
-				},
-			},
-
-			-- Explorer sidebar
-			explorer = { enabled = true },
-
-			-- Indent guides (replaces indent-blankline for speed)
-			indent = {
-				enabled = true,
-				animate = { enabled = false },
-				scope = { enabled = true },
-				chunk = { enabled = false },
-			},
-
-			input = { enabled = true },
-			notifier = { enabled = true, timeout = 3000, style = "compact" },
-			quickfile = { enabled = true }, -- fast open for big files
-			scroll = { enabled = false }, -- skip scroll animations for perf
-			statuscolumn = { enabled = true },
-			words = { enabled = true },
-		},
+		opts = require("plugins.configs.specs.snacks-ui"),
 		keys = {
 			{
 				"<leader>bd",
@@ -156,47 +71,12 @@ local plugins = {
 		name = "catppuccin",
 		priority = 1000,
 		lazy = false,
-		opts = {
-			flavour = "mocha",
-			transparent_background = false,
-			term_colors = true,
-			integrations = {
-				blink_cmp = true,
-				gitsigns = true,
-				indent_blankline = { enabled = true },
-				mason = true,
-				mini = { enabled = true },
-				nvimtree = false, -- using snacks explorer
-				telescope = { enabled = false },
-				treesitter = true,
-				fidget = true,
-				native_lsp = {
-					enabled = true,
-					underlines = {
-						errors = { "underline" },
-						hints = { "underline" },
-						warnings = { "underline" },
-						information = { "underline" },
-					},
-				},
-			},
-		},
+		opts = require("plugins.configs.specs.catppuccin-theme"),
 		config = function(_, opts)
 			require("catppuccin").setup(opts)
 			vim.cmd.colorscheme("catppuccin")
 		end,
 	},
-	-- {
-	-- 	"folke/tokyonight.nvim",
-	-- 	lazy = false,
-	-- 	priority = 1000,
-	-- 	opts = {},
-	-- 	config = function()
-	-- 		require("tokyonight").setup({
-	-- 			style = "night",
-	-- 		})
-	-- 	end,
-	-- },
 
 	{
 		"j-hui/fidget.nvim",
@@ -270,7 +150,7 @@ local plugins = {
 		"lewis6991/gitsigns.nvim",
 		event = { "BufReadPre", "BufNewFile" },
 		config = function()
-			require("gitsigns").setup(require("plugins.configs.gitsigns-conf"))
+			require("gitsigns").setup(require("lua.plugins.configs.gitsigns"))
 		end,
 	},
 
@@ -316,7 +196,7 @@ local plugins = {
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = { "rafamadriz/friendly-snippets" },
 		version = "1.*",
-		opts = require("plugins.configs.blick"),
+		opts = require("lua.plugins.configs.blink"),
 		opts_extend = { "sources.default" },
 	},
 }
