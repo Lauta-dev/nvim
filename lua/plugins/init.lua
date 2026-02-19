@@ -10,83 +10,128 @@ local plugins = {
 		opts = require("plugins.configs.mini-commnet"),
 	},
 
-  -- ── Snacks.nvim ───────────────────────────────────────────────────────────────
-  {
-    "folke/snacks.nvim",
-    priority = 900,
-    lazy     = false,
-    -- Only dashboard + notifier + quickfile need to be ready at start.
-    -- Everything else (picker, indent, words…) loads on demand.
-    opts = {
-      -- Big file protection
-      bigfile = { enabled = true, size = 1.5 * 1024 * 1024 },
+	-- ── Snacks.nvim ───────────────────────────────────────────────────────────────
+	{
+		"folke/snacks.nvim",
+		priority = 900,
+		lazy = false,
+		-- Only dashboard + notifier + quickfile need to be ready at start.
+		-- Everything else (picker, indent, words…) loads on demand.
+		opts = {
+			-- Big file protection
+			bigfile = { enabled = true, size = 1.5 * 1024 * 1024 },
 
-      -- Dashboard
-      dashboard = {
-        enabled = true,
-        preset  = {
-          header = [[
+			-- Dashboard
+			dashboard = {
+				enabled = true,
+				preset = {
+					header = [[
  ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
  ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
  ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
  ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
  ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
  ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
-          keys = {
-            { icon = " ", key = "f", desc = "Find File",      action = function() require("snacks").picker.files() end },
-            { icon = " ", key = "g", desc = "Live Grep",      action = function() require("snacks").picker.grep() end },
-            { icon = " ", key = "r", desc = "Recent",         action = function() require("snacks").picker.recent() end },
-            { icon = "󰒲 ", key = "l", desc = "Lazy",          action = ":Lazy" },
-            { icon = " ", key = "q", desc = "Quit",           action = ":qa" },
-          },
-        },
-      },
+					keys = {
+						{
+							icon = " ",
+							key = "f",
+							desc = "Find File",
+							action = function()
+								require("snacks").picker.files()
+							end,
+						},
+						{
+							icon = " ",
+							key = "g",
+							desc = "Live Grep",
+							action = function()
+								require("snacks").picker.grep()
+							end,
+						},
+						{
+							icon = " ",
+							key = "r",
+							desc = "Recent",
+							action = function()
+								require("snacks").picker.recent()
+							end,
+						},
+						{ icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
+						{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
+					},
+				},
+			},
 
-      -- Picker (replaces Telescope entirely)
-      picker = {
-        enabled = true,
-        ui_select = true,  -- replaces vim.ui.select
-        sources = {
-          explorer = {
-            -- Snacks file-tree explorer
-            hidden = true,
-            ignore = true,
-          },
-        },
-        win = {
-          input = {
-            keys = {
-              ["<Esc>"] = { "close", mode = { "i", "n" } },
-            },
-          },
-        },
-      },
+			-- Picker (replaces Telescope entirely)
+			picker = {
+				enabled = true,
+				ui_select = true, -- replaces vim.ui.select
+				sources = {
+					explorer = {
+						-- Snacks file-tree explorer
+						hidden = true,
+						ignore = true,
+					},
+				},
+				win = {
+					input = {
+						keys = {
+							["<Esc>"] = { "close", mode = { "i", "n" } },
+						},
+					},
+				},
+			},
 
-      -- Explorer sidebar
-      explorer = { enabled = true },
+			-- Explorer sidebar
+			explorer = { enabled = true },
 
-      -- Indent guides (replaces indent-blankline for speed)
-      indent = {
-        enabled  = true,
-        animate  = { enabled = false },
-        scope    = { enabled = true },
-        chunk    = { enabled = false },
-      },
+			-- Indent guides (replaces indent-blankline for speed)
+			indent = {
+				enabled = true,
+				animate = { enabled = false },
+				scope = { enabled = true },
+				chunk = { enabled = false },
+			},
 
-      input     = { enabled = true },
-      notifier  = { enabled = true, timeout = 3000, style = "compact" },
-      quickfile = { enabled = true },   -- fast open for big files
-      scroll    = { enabled = false },  -- skip scroll animations for perf
-      statuscolumn = { enabled = true },
-      words     = { enabled = true },
-    },
-    keys = {
-      { "<leader>bd", function() require("snacks").bufdelete() end,           desc = "Delete Buffer" },
-      { "<leader>gB", function() require("snacks").gitbrowse() end,           desc = "Git Browse" },
-      { "<leader>nh", function() require("snacks").notifier.show_history() end, desc = "Notification History" },
-      { "<leader>un", function() require("snacks").notifier.hide() end,       desc = "Dismiss Notifications" },
-    },
-  },
+			input = { enabled = true },
+			notifier = { enabled = true, timeout = 3000, style = "compact" },
+			quickfile = { enabled = true }, -- fast open for big files
+			scroll = { enabled = false }, -- skip scroll animations for perf
+			statuscolumn = { enabled = true },
+			words = { enabled = true },
+		},
+		keys = {
+			{
+				"<leader>bd",
+				function()
+					require("snacks").bufdelete()
+				end,
+				desc = "Delete Buffer",
+			},
+			{
+				"<leader>gB",
+				function()
+					require("snacks").gitbrowse()
+				end,
+				desc = "Git Browse",
+			},
+			{
+				"<leader>nh",
+				function()
+					require("snacks").notifier.show_history()
+				end,
+				desc = "Notification History",
+			},
+			{
+				"<leader>un",
+				function()
+					require("snacks").notifier.hide()
+				end,
+				desc = "Dismiss Notifications",
+			},
+		},
+	},
 
 	{
 		"akinsho/toggleterm.nvim",
@@ -107,40 +152,40 @@ local plugins = {
 	},
 
 	{
-    "catppuccin/nvim",
-    name     = "catppuccin",
-    priority = 1000,
-    lazy     = false,
-    opts = {
-      flavour              = "mocha",
-      transparent_background = false,
-      term_colors          = true,
-      integrations = {
-        blink_cmp    = true,
-        gitsigns     = true,
-        indent_blankline = { enabled = true },
-        mason        = true,
-        mini         = { enabled = true },
-        nvimtree     = false,   -- using snacks explorer
-        telescope    = { enabled = false },
-        treesitter   = true,
-        fidget       = true,
-        native_lsp   = {
-          enabled    = true,
-          underlines = {
-            errors   = { "underline" },
-            hints    = { "underline" },
-            warnings = { "underline" },
-            information = { "underline" },
-          },
-        },
-      },
-    },
-    config = function(_, opts)
-      require("catppuccin").setup(opts)
-      vim.cmd.colorscheme("catppuccin")
-    end,
-  },
+		"catppuccin/nvim",
+		name = "catppuccin",
+		priority = 1000,
+		lazy = false,
+		opts = {
+			flavour = "mocha",
+			transparent_background = false,
+			term_colors = true,
+			integrations = {
+				blink_cmp = true,
+				gitsigns = true,
+				indent_blankline = { enabled = true },
+				mason = true,
+				mini = { enabled = true },
+				nvimtree = false, -- using snacks explorer
+				telescope = { enabled = false },
+				treesitter = true,
+				fidget = true,
+				native_lsp = {
+					enabled = true,
+					underlines = {
+						errors = { "underline" },
+						hints = { "underline" },
+						warnings = { "underline" },
+						information = { "underline" },
+					},
+				},
+			},
+		},
+		config = function(_, opts)
+			require("catppuccin").setup(opts)
+			vim.cmd.colorscheme("catppuccin")
+		end,
+	},
 	-- {
 	-- 	"folke/tokyonight.nvim",
 	-- 	lazy = false,
@@ -156,7 +201,7 @@ local plugins = {
 	{
 		"j-hui/fidget.nvim",
 		event = { "BufReadPre", "BufNewFile" },
-    opts  = { notification = { window = { winblend = 0 } } },
+		opts = { notification = { window = { winblend = 0 } } },
 	},
 
 	{
@@ -218,50 +263,6 @@ local plugins = {
 		config = function()
 			local config = require("plugins.configs.nvim-treesitter")
 			require("nvim-treesitter.configs").setup(config)
-		end,
-	},
-
-	{
-		"nvim-tree/nvim-tree.lua",
-		config = true,
-		enabled = false,
-		opts = require("plugins.configs.nvim-tree"),
-	},
-
-	{
-		"nvim-telescope/telescope.nvim",
-		tag = "0.1.5",
-		cmd = "Telescope",
-		lazy = true,
-		enabled = false,
-
-		config = function()
-			require("telescope").load_extension("persisted")
-			require("telescope").load_extension("fzf")
-		end,
-
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"tsakirist/telescope-lazy.nvim",
-			{
-				"nvim-telescope/telescope-fzf-native.nvim",
-				build = "make",
-				cond = function()
-					return vim.fn.executable("make") == 1
-				end,
-			},
-		},
-	},
-
-	{
-		"lukas-reineke/indent-blankline.nvim",
-		event = { "BufReadPre", "BufNewFile" },
-		enabled = false,
-		config = function()
-			local hooks = require("ibl.hooks")
-			local config = require("plugins.configs.indent-blankline")
-			config.load_rainbow(hooks)
-			require("ibl").setup()
 		end,
 	},
 
