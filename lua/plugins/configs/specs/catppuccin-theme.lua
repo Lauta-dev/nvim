@@ -22,4 +22,5 @@ return {
 			},
 		},
 	},
+	compile_path = vim.fn.stdpath("cache") .. "/catppuccin",
 }

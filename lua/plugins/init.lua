@@ -7,7 +7,7 @@ local plugins = {
 		"echasnovski/mini.comment",
 		version = "*",
 		lazy = true,
-		opts = require("lua.plugins.configs.mini-comment"),
+		opts = require("plugins.configs.mini-comment"),
 	},
 
 	-- ── Snacks.nvim ───────────────────────────────────────────────────────────────
@@ -150,7 +150,7 @@ local plugins = {
 		"lewis6991/gitsigns.nvim",
 		event = { "BufReadPre", "BufNewFile" },
 		config = function()
-			require("gitsigns").setup(require("lua.plugins.configs.gitsigns"))
+			require("gitsigns").setup(require("plugins.configs.gitsigns"))
 		end,
 	},
 
@@ -196,7 +196,7 @@ local plugins = {
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = { "rafamadriz/friendly-snippets" },
 		version = "1.*",
-		opts = require("lua.plugins.configs.blink"),
+		opts = require("plugins.configs.blink"),
 		opts_extend = { "sources.default" },
 	},
 }

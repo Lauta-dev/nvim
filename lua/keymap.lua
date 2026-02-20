@@ -23,7 +23,7 @@ end
 
 ---@param g string Appps generales
 local function general_app(g)
-	local req = require("lua.plugins.configs.specs.snacks-ui")
+	local req = require("snacks")
 
 	if g == "explorer" then
 		req.explorer()
