@@ -6,7 +6,7 @@ local opt = vim.opt
 local g = vim.g
 
 -- ── Colorscheme ─────────────────────────────────────────────
-vim.cmd.colorscheme("catppuccin-mocha")
+vim.cmd.colorscheme("kanso-ink")
 
 -- ── Leader ──────────────────────────────────────────────────
 g.mapleader = " "

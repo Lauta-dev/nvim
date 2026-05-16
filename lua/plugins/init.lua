@@ -10,6 +10,18 @@ local plugins = {
 		opts = require("plugins.configs.mini-comment"),
 	},
 
+	{
+		"webhooked/kanso.nvim",
+		lazy = false,
+		priority = 1000,
+		opts = {
+			foreground = {
+				dark = "saturated", -- Use default colors in dark mode
+				light = "saturated", -- Use higher saturation in light mode
+			},
+		},
+	},
+
 	-- ── Snacks.nvim ───────────────────────────────────────────────────────────────
 	{
 		"folke/snacks.nvim",
