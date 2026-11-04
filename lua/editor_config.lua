@@ -5,8 +5,10 @@
 local opt = vim.opt
 local g = vim.g
 
+vim.opt.cmdheight = 0
+
 -- ── Colorscheme ─────────────────────────────────────────────
-vim.cmd.colorscheme("kanso-ink")
+vim.cmd.colorscheme("tokyonight-night")
 
 -- ── Leader ──────────────────────────────────────────────────
 g.mapleader = " "

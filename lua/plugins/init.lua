@@ -4,22 +4,16 @@ local external_plugins = {
 
 local plugins = {
 	{
+		"folke/tokyonight.nvim",
+		lazy = false,
+		priority = 1000,
+		opts = {},
+	},
+	{
 		"echasnovski/mini.comment",
 		version = "*",
 		lazy = true,
 		opts = require("plugins.configs.mini-comment"),
-	},
-
-	{
-		"webhooked/kanso.nvim",
-		lazy = false,
-		priority = 1000,
-		opts = {
-			foreground = {
-				dark = "saturated", -- Use default colors in dark mode
-				light = "saturated", -- Use higher saturation in light mode
-			},
-		},
 	},
 
 	-- ── Snacks.nvim ───────────────────────────────────────────────────────────────
@@ -76,18 +70,6 @@ local plugins = {
 			"SessionSelect",
 			"SessionStart",
 		},
-	},
-
-	{
-		"catppuccin/nvim",
-		name = "catppuccin",
-		priority = 1000,
-		lazy = false,
-		opts = require("plugins.configs.specs.catppuccin-theme"),
-		config = function(_, opts)
-			require("catppuccin").setup(opts)
-			vim.cmd.colorscheme("catppuccin")
-		end,
 	},
 
 	{
