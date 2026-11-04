@@ -16,51 +16,11 @@ local plugins = {
 		opts = require("plugins.configs.mini-comment"),
 	},
 
-	-- ── Snacks.nvim ───────────────────────────────────────────────────────────────
 	{
 		"folke/snacks.nvim",
 		priority = 900,
 		lazy = false,
 		opts = require("plugins.configs.specs.snacks-ui"),
-		keys = {
-			{
-				"<leader>bd",
-				function()
-					require("snacks").bufdelete()
-				end,
-				desc = "Delete Buffer",
-			},
-			{
-				"<leader>gB",
-				function()
-					require("snacks").gitbrowse()
-				end,
-				desc = "Git Browse",
-			},
-			{
-				"<leader>nh",
-				function()
-					require("snacks").notifier.show_history()
-				end,
-				desc = "Notification History",
-			},
-			{
-				"<leader>un",
-				function()
-					require("snacks").notifier.hide()
-				end,
-				desc = "Dismiss Notifications",
-			},
-		},
-	},
-
-	{
-		"akinsho/toggleterm.nvim",
-		version = "*",
-		config = true,
-		lazy = true,
-		cmd = "ToggleTerm",
-		enabled = false,
 	},
 
 	{
@@ -86,9 +46,9 @@ local plugins = {
 
 	{
 		"folke/todo-comments.nvim",
-		cmd = { "SnacksPicker" },
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = true,
+		lazy = true,
 	},
 
 	{
@@ -132,14 +92,10 @@ local plugins = {
 	},
 
 	{
-		"nvim-treesitter/nvim-treesitter",
-		event = { "BufReadPre", "BufNewFile" },
-		config = function()
-			local config = require("plugins.configs.nvim-treesitter")
-			require("nvim-treesitter.configs").setup(config)
-		end,
+		"romus204/tree-sitter-manager.nvim",
+		cmd = { "TSManager", "TSInstall", "TSInstallSync", "TSUninstall", "TSUpdate", "TSUpdateSync" },
+		opts = require("plugins.configs.nvim-treesitter"),
 	},
-
 	{
 		"lewis6991/gitsigns.nvim",
 		event = { "BufReadPre", "BufNewFile" },
