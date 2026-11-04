@@ -18,6 +18,14 @@ return {
 			keys = {
 				{
 					icon = " ",
+					key = "p",
+					desc = "Open project",
+					action = function()
+						require("snacks").picker.projects()
+					end,
+				},
+				{
+					icon = " ",
 					key = "f",
 					desc = "Find File",
 					action = function()

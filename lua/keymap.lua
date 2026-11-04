@@ -2,232 +2,194 @@ local map = vim.keymap.set
 local buf = vim.lsp.buf
 local cmd = vim.cmd
 
----@param key string Combinación de teclas que se pulsaran.
----@param action string La acción a realizar.
----@param desc string Descripción.
-local function normalKey(key, action, desc)
-	map("n", "<" .. key .. ">", action, { desc = desc, silent = true, noremap = true })
-end
-
----@param key string Combinación de teclas que se pulsaran.
----@param action string La acción a realizar.
----@param desc string Descripción.
-local function spaceKey(key, action, desc)
-	map("n", key, action, { desc = desc, silent = true, noremap = true })
-end
-
----@param picker string picker
-local function pickers(picker)
-	require("snacks.picker")[picker]()
-end
-
----@param g string Appps generales
-local function general_app(g)
-	local req = require("snacks")
-
-	if g == "explorer" then
-		req.explorer()
-	end
-
-	if g == "terminal" then
-		req.terminal.toggle()
-	end
-
-	if g == "lazygit" then
-		req.lazygit()
-	end
-end
-
--- Atajos usando tecla espaciadora
-local space_keys = {
-	{ key = "gd", action = buf.definition, desc = "Ir a la definición" },
-	{ key = "gh", action = buf.hover, desc = "Hacer hover" },
-	{ key = "sh", action = buf.signature_help, desc = "Mostrar ayuda" },
+local keys = {
 	{
-		key = "ft",
-		-- action = cmd.TodoTelescope,
-		action = function()
-			pickers("todo_comments")
+		"rr",
+		function()
+			cmd.restart()
 		end,
-		desc = "Abrir telescope para buscar TODO",
+		desc = "Reiniciar sessión",
+	},
+	{
+		"ft",
+		function()
+			require("lazy").load({ plugins = { "todo-comments.nvim" } })
+			require("snacks.picker")["todo_comments"]()
+		end,
+		desc = "Buscar TODOs",
+	},
+	{
+		"e",
+		function()
+			Snacks.picker.explorer()
+		end,
+		desc = "Abrir Explorador",
 	},
 
 	{
-		key = "e",
-		action = function()
-			general_app("explorer")
+		"ff",
+		function()
+			Snacks.picker.files()
 		end,
-		desc = "Mover el cursor al file explorer",
+		desc = "Buscar archivos",
+	},
+	{
+		"fb",
+		function()
+			Snacks.picker.buffers()
+		end,
+		desc = "Buscar buffers",
+	},
+	{
+		"fg",
+		function()
+			Snacks.picker.grep()
+		end,
+		desc = "Buscar texto",
+	},
+	{
+		"fr",
+		function()
+			Snacks.picker.lsp_references()
+		end,
+		desc = "Referencias",
+	},
+	{
+		"fp",
+		function()
+			Snacks.picker.projects()
+		end,
+		desc = "Proyectos",
+	},
+	{
+		"fk",
+		function()
+			Snacks.picker.keymaps()
+		end,
+		desc = "Buscar atajos",
+	},
+	{
+		"tf",
+		function()
+			Snacks.terminal.toggle()
+		end,
+		desc = "Terminal flotante",
 	},
 
 	{
-		key = "ff",
-		action = function()
-			pickers("files")
+		"nh",
+		function()
+			require("snacks").notifier.show_history()
 		end,
-		desc = "Abrir telescope para buscar archivos",
-	},
-	{
-		key = "fb",
-		action = function()
-			pickers("buffers")
-		end,
-		desc = "Abrir telescope para buscar buffers",
-	},
-	{
-		key = "fr",
-		action = function()
-			pickers("lsp_references")
-		end,
-		desc = "Abrir telescope para buscar referencias",
-	},
-	{
-		key = "fg",
-		action = function()
-			pickers("grep")
-		end,
-		desc = "Abrir telescope para buscar caracteres",
-	},
-	{
-		key = "fp",
-		action = function()
-			pickers("projects")
-		end,
-		desc = "Buscar proyectos",
-	},
-	{
-		key = "s",
-		action = [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
-		desc = "Sustituir la palabra bajo el cursor en todo el buffer",
+		desc = "Notification History",
 	},
 
+	{ "gd", buf.definition, "Ir a la definición" },
+	{ "gh", buf.hover, "Hacer hover" },
+	{ "sh", buf.signature_help, "Mostrar ayuda" },
+
 	{
-		key = "tf",
-		action = function()
-			general_app("terminal")
-		end,
-		desc = "Abrir terminal flotante",
+		"s",
+		[[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+		"Sustituir la palabra bajo el cursor en todo el buffer",
 	},
+
+	{ "<C-x>", ":x <CR>", "Guarda buffer y sale de Neovim" },
+	{ "<C-q>", ":q <CR>", "Sale de Neovim sin guardar buffer" },
+	{ "<C-s>", ":w!<CR>", "Guardar cambios" },
+
 	{
-		key = "tg",
-		action = function()
-			general_app("lazygit")
-		end,
-		desc = "Abrir Lazygit",
+		"<C-r>",
+		"<C-r>",
+		"Devuelve lineas eliminadas (Es lo contrario a 'u')",
 	},
-}
+	{ "<C-u>", "u", "Elimina lineas puestas (Es la acción de 'u')" },
 
--- Atajos usando Control
-local normal_keys = {
-	{ key = "C-x", action = ":x <CR>", desc = "Guarda buffer y sale de Neovim" },
-	{ key = "C-q", action = ":q <CR>", desc = "Sale de Neovim sin guardar buffer" },
-	{ key = "C-s", action = ":w!<CR>", desc = "Guardar cambios" },
-
-	{
-		key = "C-r",
-		action = "<C-r>",
-		desc = "Devuelve lineas eliminadas (Es lo contrario a 'u')",
-	},
-	{ key = "C-u", action = "u", desc = "Elimina lineas puestas (Es la acción de 'u')" },
-
-	{ key = "C-d", action = vim.diagnostic.open_float, desc = "Ver diagnostico" },
-	-- { key = "C-b",    action = function() Snacks.explorer() end, desc = "Abrir file explorer" },
-
-	{ key = "C-n", action = cmd.new, desc = "Crear nuevo buffer" },
-	{ key = "C-c", action = cmd.bd, desc = "Cerrar buffer" },
-	{ key = "C-p", action = buf.rename, desc = "Renombrar variables/Función" },
+	{ "<C-d>", vim.diagnostic.open_float, "Ver diagnostico" },
+	{ "<C-n>", cmd.new, "Crear nuevo buffer" },
+	{ "<C-c>", cmd.bd, "Cerrar buffer" },
+	{ "<C-p>", buf.rename, "Renombrar variables/Función" },
 
 	{
-		key = "A-Up",
-		action = function()
+		"<A-Up>",
+		function()
 			cmd.m("-2")
 		end,
-		desc = "Mueve la linea arriba",
+		"Mueve la linea arriba",
 	},
 	{
-		key = "A-Down",
-		action = function()
+		"<A-Down>",
+		function()
 			cmd.m("+1")
 		end,
-		desc = "Mueve la linea abajo",
+		"Mueve la linea abajo",
 	},
 
-	{ key = "y", action = '"+y', desc = "Copiar al portapapeles" },
-	{ key = "p", action = '"+p', desc = "Pegar desde el portapapeles" },
-	{ key = "C-Left", action = "<C-w>h", desc = "Ir a la izq" },
-	{ key = "C-Right", action = "<C-w>l", desc = "Ir a la der" },
-	{ key = "C-Down", action = "<C-w>j", desc = "Ir abajo" },
-	{ key = "C-Up", action = "<C-w>k", desc = "Ir arriba" },
+	{ "y", '"+y', "Copiar al portapapeles" },
+	{ "p", '"+p', "Pegar desde el portapapeles" },
+	{ "<C-Left>", "<C-w>h", "Ir a la izq" },
+	{ "<C-Right>", "<C-w>l", "Ir a la der" },
+	{ "<C-Down>", "<C-w>j", "Ir abajo" },
+	{ "<C-Up>", "<C-w>k", "asd" },
 }
 
-for _, obj in ipairs(space_keys) do
-	spaceKey(obj.key, obj.action, obj.desc)
+for _, k in ipairs(keys) do
+	map(k[4] or "n", k[1], k[2], { desc = k[3] })
 end
 
-for _, obj in ipairs(normal_keys) do
-	normalKey(obj.key, obj.action, obj.desc)
-end
-local all_keys = vim.list_extend(vim.deepcopy(space_keys), normal_keys)
+local function my_keymaps()
+	local items = {}
+	local max = 10
 
--- calcular ancho máximo de las keys
-local max_key_len = 0
-for _, e in ipairs(all_keys) do
-	max_key_len = math.max(max_key_len, #e.key)
-end
+	for _, k in ipairs(keys) do
+		local space = " "
+		local n = max - #k[1]
 
--- crear items con padding uniforme
-local items = vim.tbl_map(function(e)
-	local padding = string.rep(" ", max_key_len - #e.key + 2) -- +2 para separar
-	return {
-		text = e.key .. padding .. e.desc,
-		action = e.action,
-		desc = e.desc,
-	}
-end, all_keys)
+		for _ = 1, n do
+			space = space .. " "
+		end
 
-map("n", "fk", function()
-	Snacks.picker.pick({
-		title = "Atajos",
-		layout = { preset = "default", preview = false },
+		table.insert(items, {
+			text = k[1] .. space .. (k.desc or k[3] or ""),
+			key = k[1],
+			desc = k.desc or k[3],
+			action = k[2],
+		})
+	end
+
+	Snacks.picker({
 		items = items,
 		format = function(item)
-			return { { item.text } }
+			return {
+				{ item.text, "SnacksPickerLabel" },
+			}
 		end,
-
+		layout = {
+			layout = {
+				width = 0.8,
+				height = 0.8,
+				min_width = 30,
+				min_height = 20,
+				box = "vertical",
+				border = true,
+				title = "Mis Keymaps",
+				{ win = "input", height = 1, border = "bottom" },
+				{ win = "list", border = "none" },
+			},
+		},
 		confirm = function(picker, item)
 			picker:close()
+
 			if type(item.action) == "function" then
 				item.action()
 			elseif type(item.action) == "string" then
-				if vim.startswith(item.action, ":") and not item.action:find("<") then
-					-- Si empieza con ":" y no contiene <teclas>, es un comando ex
-					vim.cmd(item.action:sub(2))
-				else
-					-- Sino, lo tratamos como entrada de teclado
-					vim.api.nvim_input(vim.api.nvim_replace_termcodes(item.action, true, true, true))
-				end
+				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(item.action, true, false, true), "m", false)
 			end
 		end,
 	})
-end, { desc = "Abrir picker de atajos" })
-
-function _G.set_terminal_keymaps()
-	local opts = { buffer = 0 }
-	vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
 end
 
-vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
-
--- Dehabilitar tecla "u" que esta por defecto
-
-map("n", "u", "<Nop>", { noremap = true, silent = true })
-
--- Evita que salga del modo Visual al usar < o >
-
-vim.keymap.set("x", "<", "<gv", { silent = true })
-vim.keymap.set("x", ">", ">gv", { silent = true })
-
-----------------------------------------
+map("n", "fk", my_keymaps, { desc = "Mostrar mis atajos" })
 
 -- Insert mode Right fluido
 vim.keymap.set("i", "<Right>", function()
