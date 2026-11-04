@@ -154,6 +154,10 @@ local normal_keys = {
 
 	{ key = "y", action = '"+y', desc = "Copiar al portapapeles" },
 	{ key = "p", action = '"+p', desc = "Pegar desde el portapapeles" },
+	{ key = "C-Left", action = "<C-w>h", desc = "Ir a la izq" },
+	{ key = "C-Right", action = "<C-w>l", desc = "Ir a la der" },
+	{ key = "C-Down", action = "<C-w>j", desc = "Ir abajo" },
+	{ key = "C-Up", action = "<C-w>k", desc = "Ir arriba" },
 }
 
 for _, obj in ipairs(space_keys) do
