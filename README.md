@@ -46,7 +46,7 @@ La configuración está modularizada en archivos Lua bajo `lua/`:
 - **mini.statusline** — línea de estado
 - **snacks.nvim** — explorer, pickers, terminal, lazygit, notifier
 - **blink.cmp** + **friendly-snippets** — autocompletado
-- **nvim-treesitter** — resaltado de sintaxis
+- **tree-sitter-manager** — gestión de parsers treesitter
 - **nvim-autopairs** — autosugerencia de pares
 - **nvim-web-devicons** — iconos en el file explorer
 - **gitsigns.nvim** — indicadores git en el signcolumn
