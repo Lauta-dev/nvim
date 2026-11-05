@@ -81,22 +81,35 @@ La configuración está modularizada en archivos Lua bajo `lua/`:
 
 | tecla | acción |
 | --- | --- |
-| `<Space>e` | file explorer (snacks) |
-| `<Space>ff` | buscar archivos |
-| `<Space>fb` | buscar buffers |
-| `<Space>fg` | buscar texto (grep) |
-| `<Space>fr` | referencias LSP |
-| `<Space>fp` | proyectos |
-| `<Space>ft` | terminal flotante |
-| `<Space>tg` | lazygit |
-| `<Space>gd` | ir a definición |
-| `<Space>gh` | hover |
-| `<Space>sh` | signature help |
-| `<Space>ft` | buscar TODOs |
+| `e` | file explorer (snacks) |
+| `ff` | buscar archivos |
+| `fb` | buscar buffers |
+| `fg` | buscar texto (grep) |
+| `fr` | referencias LSP |
+| `fp` | proyectos |
+| `tf` | terminal flotante |
+| `ft` | buscar TODOs |
 | `fk` | ver todos los atajos |
+| `gd` | ir a definición |
+| `gh` | hover |
+| `sh` | signature help |
+| `rr` | reiniciar sesión |
+| `nh` | historial de notificaciones |
+| `s` | sustituir palabra bajo el cursor |
 | `C-s` | guardar |
 | `C-x` | guardar y salir |
 | `C-q` | salir sin guardar |
 | `C-n` | nuevo buffer |
 | `C-c` | cerrar buffer |
 | `C-d` | ver diagnóstico |
+| `C-p` | renombrar variable/función |
+| `C-r` | rehacer |
+| `C-u` | deshacer |
+| `A-Up` | mover línea arriba |
+| `A-Down` | mover línea abajo |
+| `y` | copiar al portapapeles |
+| `p` | pegar desde el portapapeles |
+| `C-Left` | ventana izquierda |
+| `C-Right` | ventana derecha |
+| `C-Down` | ventana abajo |
+| `C-Up` | ventana arriba |
